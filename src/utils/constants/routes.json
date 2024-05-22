@@ -1,0 +1,5 @@
+{
+    "user": "/v1/user",
+    "computer": "/v1/computer",
+    "hospital": "/v1/hospital"
+}
