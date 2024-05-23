@@ -5,7 +5,6 @@ import { UsersUtils } from "../utils/userUtils";
 
 //*Obtener el email para validación
 function getUser(email: string){
-
 }
 
 //*Obtener todos los usuarios
@@ -37,14 +36,34 @@ function updatePartialUser(params: Partial<NewUser>, id: string){
 function deleteUser(id: string){
     const client = getUsersUtils();
     return client.deleteUser(id);
-
 }
+
+//*Obtiene usuario por ID
+function getUserById(id: string){
+    const client = getUsersUtils();
+    return client.getUserById(id);
+}
+
+//*Obtiene usuario por email
+function getUserByEmail(email: string){
+    const client = getUsersUtils();
+    return client.getUserByEmail(email);
+}
+/**
+//*Convierte los datos del user a QR
+function createUserQR(id: string){
+    const client = getUsersUtils();
+    return client.createUserQR(id);
+}*/
 
 export default {
     getUser,
     getUsers,
+    getUserById,
+    getUserByEmail,
     newUser,
     updateFullUser,
     updatePartialUser,
     deleteUser,
+    //createUserQR,
 }

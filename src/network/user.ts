@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import Controller from "../controllers/user"
+import { UserData } from '../interfaces/userInterface';
 
 const routes = express.Router();
 
@@ -97,6 +98,38 @@ function deleteUser(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
+//*Obtener los datos de un usuario por id
+function getUserById(request: Request, response: Response) {
+    const { id } = request.params
+    Controller.getUserById(id)
+    .then((result) => {
+        response.send(result)
+    })
+        .catch((error) => response.send(error))
+}
+
+//*Obtener los datos de un usuario por email
+function getUserByEmail(request: Request, response: Response) {
+    const { email } = request.params
+    Controller.getUserByEmail(email)
+    .then((result) => {
+        console.log("Email")
+        response.send(result)
+    })
+        .catch((error) => response.send(error))
+}
+
+/**
+//*Obtener los datos de un usuario por id para qr
+function createUserQR(request: Request, response: Response) {
+    const { id } = request.params
+    Controller.getUserById(id)
+    .then((result) => {
+        response.send(`<img src="${result}"/>`)
+    })
+        .catch((error) => response.send(error))
+}*/
+
 //*Todas las rutas para realizar consultas
 routes.get("/", getUser);
 routes.get("/all", getUsers);
@@ -105,5 +138,8 @@ routes.post("/", newUser);
 routes.put("/:id", updateFullUser);
 routes.patch("/:id", updatePartialUser);
 routes.delete("/:id", deleteUser);
+//routes.get("/:id", createUserQR);
+routes.get("/id/:id", getUserById);
+routes.get("/email/:email", getUserByEmail);
 
 export default routes;

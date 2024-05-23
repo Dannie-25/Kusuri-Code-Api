@@ -4,6 +4,7 @@ import { NewUserData, UserData } from "../../interfaces/userInterface";
 import { NewComputerData, ComputerData } from "../../interfaces/computerInterface";
 import { HospitalData, NewHospitalData } from "../../interfaces/hospitalInterface";
 import 'dotenv/config';
+import QRCode from 'qrcode'
 
 
 //*UTILS User
@@ -34,6 +35,20 @@ export class UsersUtils {
             password: data.password,
         }
     }
+/**
+    //*Crear Codigo QR para almacenamiento de los atributos del User
+    async createUserQR(data: any): Promise<any> {
+        const generateQR = async (UserData: any) => {
+            try {
+                return await QRCode.toDataURL(JSON.stringify(UserData))
+            } catch (err) {
+                console.error(err)
+                throw err;
+            }
+        }
+        return await generateQR(data);
+    }
+*/
 
     //*Obtener todos los usuarios de la base de datos
     async getUsers(): Promise<any> {
