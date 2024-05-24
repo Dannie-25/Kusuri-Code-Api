@@ -35,20 +35,16 @@ export class UsersUtils {
             password: data.password,
         }
     }
-/**
-    //*Crear Codigo QR para almacenamiento de los atributos del User
-    async createUserQR(data: any): Promise<any> {
-        const generateQR = async (UserData: any) => {
-            try {
-                return await QRCode.toDataURL(JSON.stringify(UserData))
-            } catch (err) {
-                console.error(err)
-                throw err;
-            }
+
+    //!Crear Codigo QR para almacenamiento de los atributos del User
+    async createUserQR(data: string): Promise<string> {
+        try {
+            return await QRCode.toDataURL(data);
+        } catch (err) {
+            console.error('Error generating QR:', err);
+            throw err;
         }
-        return await generateQR(data);
     }
-*/
 
     //*Obtener todos los usuarios de la base de datos
     async getUsers(): Promise<any> {
@@ -369,6 +365,7 @@ export class HospitalsUtils {
     //*Consulta en la base de datos
     getDataFromDatabase(data: any): HospitalData {
         return {
+            clue_unit: data.clue_unit,
             id_unit: data.id_unit,
             name: data.name,
             leve_attention: data.leve_attention,
@@ -410,30 +407,35 @@ export class HospitalsUtils {
     //*Inserción de una nuevo Hospital
     async newHospital(params: NewHospitalData) {
 
-        const query = "INSERT INTO hospitals (name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy) VALUES (?,?,?,?,?,?,?,?,?)";
-        const { name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
+        const query = "INSERT INTO hospitals ( clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
         const existHospital = await this.exitsHospital(name);
         if (existHospital) {
             return Promise.reject("Hospital already exists");
         }
-        const result = await this.databaseConexion.query(query, [name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy]);
+        const result = await this.databaseConexion.query(query, [clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy]);
         return result;
     }
 
     //*Actualizar todos los campos del Hospital
     async updateFullHospital(params: NewHospitalData, id_unit: string) {
 
-        const query = "UPDATE hospitals SET name = ?, leve_attention = ?, internet = ?, authorized_office = ?, NIS_office = ?, administrator_name = ?, telephone_number = ?, sinba = ?, pharmacy = ? WHERE id_unit = ?";
-        const { name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
-        const result = await this.databaseConexion.query(query, [name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy, id_unit]);
+        const query = "UPDATE hospitals SET clue_unit = ?, name = ?, leve_attention = ?, internet = ?, authorized_office = ?, NIS_office = ?, administrator_name = ?, telephone_number = ?, sinba = ?, pharmacy = ? WHERE id_unit = ?";
+        const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
+        const result = await this.databaseConexion.query(query, [clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy, id_unit]);
         return result;
     }
 
     //*Actualizar por partes el Hospital
     async updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string) {
-        const { name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
+        const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = params;
         let consulta = "UPDATE hospitals SET ";
         const array = [];
+
+        if (clue_unit) {
+            consulta += "clue_unit = ?, ";
+            array.push(clue_unit);
+        }
 
         if (name) {
             consulta += "name = ?, ";

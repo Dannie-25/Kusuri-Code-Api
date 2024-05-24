@@ -11,9 +11,10 @@ function getHospital(request: Request, response: Response) {
 
 //*Agregar hospital, llamando al controller para la solicitud
 function newHospital(request: Request, response: Response) {
-    const {name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = request.body;
+    const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = request.body;
 
     Controller.newHospital({
+        clue_unit,
         name,
         leve_attention,
         internet,
@@ -43,8 +44,9 @@ function getHospitals(request: Request, response: Response) {
 
 //*Actualizar todos los campos del hospital desde el controller
 function updateFullHospital(request: Request, response: Response) {
-    const { name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy, id_unit } = request.body;
+    const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy, id_unit } = request.body;
     Controller.updateFullHospital({
+        clue_unit,
         name,
         leve_attention,
         internet,
@@ -61,9 +63,10 @@ function updateFullHospital(request: Request, response: Response) {
 
 //*Actualizar algunos campos del hospital desde el controller
 function updatePartialHospital(request: Request, response: Response) {
-    const { name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = request.body;
+    const { clue_unit, name, leve_attention, internet, authorized_office, NIS_office, administrator_name, telephone_number, sinba, pharmacy } = request.body;
     const { id_unit } = request.params;
     const partialHospitalData = {
+        clue_unit,
         name,
         leve_attention,
         internet,

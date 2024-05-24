@@ -3,6 +3,7 @@ import { getUsersUtils } from "../services/serviceLocator/composer";
 import { UsersUtils } from "../utils/userUtils";
 
 
+
 //*Obtener el email para validación
 function getUser(email: string){
 }
@@ -49,12 +50,28 @@ function getUserByEmail(email: string){
     const client = getUsersUtils();
     return client.getUserByEmail(email);
 }
-/**
-//*Convierte los datos del user a QR
-function createUserQR(id: string){
+
+//!Convierte los datos del user a QR
+async function createUserQR(id: string) {
     const client = getUsersUtils();
-    return client.createUserQR(id);
-}*/
+    const user = await client.getUserById(id);
+
+    if (!user || typeof user === 'boolean') {
+        throw new Error('Usuario no encontrado');
+    }
+
+    const formattedData =`
+    Informacion:
+    Nombre: ${user.names}
+    Apellido: ${user.lastNames}
+    Email: ${user.email}
+    Password: ${user.password}
+    `;
+
+    return client.createUserQR(formattedData.trim());
+}
+
+
 
 export default {
     getUser,
@@ -65,5 +82,5 @@ export default {
     updateFullUser,
     updatePartialUser,
     deleteUser,
-    //createUserQR,
+    createUserQR
 }

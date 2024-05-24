@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import Controller from "../controllers/user"
-import { UserData } from '../interfaces/userInterface';
+
 
 const routes = express.Router();
 
@@ -74,7 +74,7 @@ function updateFullUser(request: Request, response: Response) {
 //*Actualizar algunos campos del usuario desde el controller
 function updatePartialUser(request: Request, response: Response) {
     const { names, lastNames, email, password} = request.body; 
-    const {id} = request.params;
+    const { id } = request.params;
     const partialUserData = {
         names,
         lastNames,
@@ -113,22 +113,21 @@ function getUserByEmail(request: Request, response: Response) {
     const { email } = request.params
     Controller.getUserByEmail(email)
     .then((result) => {
-        console.log("Email")
         response.send(result)
     })
         .catch((error) => response.send(error))
 }
 
-/**
-//*Obtener los datos de un usuario por id para qr
-function createUserQR(request: Request, response: Response) {
-    const { id } = request.params
-    Controller.getUserById(id)
-    .then((result) => {
-        response.send(`<img src="${result}"/>`)
-    })
-        .catch((error) => response.send(error))
-}*/
+//!Obtener los datos de un usuario por id para qr
+async function createUserQR(request: Request, response: Response) {
+    const { id } = request.params;
+    try {
+        const qrUrl = await Controller.createUserQR(id);
+        response.send(`<img src="${qrUrl}" />`);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
+}
 
 //*Todas las rutas para realizar consultas
 routes.get("/", getUser);
@@ -138,7 +137,7 @@ routes.post("/", newUser);
 routes.put("/:id", updateFullUser);
 routes.patch("/:id", updatePartialUser);
 routes.delete("/:id", deleteUser);
-//routes.get("/:id", createUserQR);
+routes.get("/qr/:id", createUserQR);
 routes.get("/id/:id", getUserById);
 routes.get("/email/:email", getUserByEmail);
 

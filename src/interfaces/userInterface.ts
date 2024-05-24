@@ -35,6 +35,6 @@ export interface UsersUtilsInterface {
     newUser(params: NewUserData);
     updateFullUser(params: NewUserData, id);
     updatePartialUser(params: Partial<NewUserData>, id: string);
-    deleteUser(id:String);
-    //createUserQR(id: string);
+    deleteUser(id:string);
+    createUserQR(id: string);
 }

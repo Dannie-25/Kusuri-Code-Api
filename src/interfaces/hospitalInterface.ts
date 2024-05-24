@@ -3,6 +3,7 @@ import { Connection } from "mysql2/promise";
 //*Datos del Hospital
 export type HospitalData = {
     id_unit: number;
+    clue_unit: string;
     name: string;
     leve_attention: string;
     internet: boolean;
@@ -16,7 +17,8 @@ export type HospitalData = {
 
 //*Datos a Editar para el nuevo hospital
 export interface NewHospitalData {
-    name?: string;
+    clue_unit?: string;
+    name: string;
     leve_attention: string;
     internet: boolean;
     authorized_office: boolean;
@@ -29,6 +31,7 @@ export interface NewHospitalData {
 
 //*Datos para un nuevo hospital
 export interface NewHospital{
+    clue_unit: string;
     name: string;
     leve_attention: string;
     internet: boolean;
