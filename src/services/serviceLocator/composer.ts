@@ -10,7 +10,7 @@ import { HospitalsUtilsInterface } from "../../interfaces/hospitalInterface";
 
 export const di = DependencyLocator.getInstance();
 
-//!Esta función evita errores de Typo
+//!Evita errores de Typo
 const types ={
     database: "database",
     usersUtils: "usersUtils",
@@ -42,20 +42,23 @@ export async function initial(){
     );
 }
 
-//*Conexión a Data Base
+//*Conexión a la Base de Datos
 function getDatabase():Connection{
     return di.get(types.database)
 }
 
-//*Usuarios
+//*Utils de Usuarios
 export function getUsersUtils(): UsersUtilsInterface{
     return di.get(types.usersUtils)
 }
-//*Computers
-export function getComputersUtils(): ComputersUtilsInterface{
-    return di.get(types.computersUtils)
-}
-//*Hospitals
+
+//*Utils de Unidades Medicas
 export function getHospitalsUtils(): HospitalsUtilsInterface{
     return di.get(types.hospitalsUtils)
 }
+
+//*Utils de Equipos
+export function getComputersUtils(): ComputersUtilsInterface{
+    return di.get(types.computersUtils)
+}
+

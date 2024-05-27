@@ -12,7 +12,8 @@ passport.use('local', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true,
 },
-//*Autenticación de usuario existente
+
+//*Autenticación del Usuario 
     async (request: Request, email: string, password: string, done: any) => {
 
         const usersUtils = getUsersUtils();

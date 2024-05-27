@@ -1,63 +1,62 @@
 import { NewComputer } from "../interfaces/computerInterface";
 import { getComputersUtils } from "../services/serviceLocator/composer";
-//import { ComputersUtils } from "../utils/userUtils";
 import { ComputersUtils } from "../utils/computerUtils";
 
-//*Obtener el numero de serie de la computadora para validación
+//*Obtiene el numero de serie del Equipo para su validación
 function getComputer(serial_number: string) {
 
 }
 
-//*Obtener todas las computer
+//*Obtiene todos los Equipos registrados
 async function getComputers() {
     const client = getComputersUtils();
     return client.getComputers();
 }
 
-//*Obtiene el equipo por ID
+//*Obtiene el equipo por Id
 function getComputerById(id_equipment: string) {
     const client = getComputersUtils();
     return client.getComputerById(id_equipment);
 }
 
-//*Obtiene a la unidad por la clave de unidad
+//*Obtiene el Equipo por la clave de Unidad
 function getComputerByIdUnit(id_unit: string) {
     const client = getComputersUtils();
     return client.getComputerByIdUnit(id_unit);
 }
 
-//*Obtiene a la unidad por el nombre
+//*Obtiene el Equipo por el nombre
 function getComputerByName(equipment_type: string) {
     const client = getComputersUtils();
     return client.getComputerByName(equipment_type);
 }
 
-//*Agregar nuevas computer
+//*Agregar nuevos Equipos
 function newComputer(params: NewComputer) {
     const client = getComputersUtils();
     return client.newComputer(params);
 }
 
-//*Actualizar todo los datos del computer
+//*Actualiza todo los datos del Equipo
 function updateFullComputer(params: NewComputer, id_equipment: string) {
     const client = getComputersUtils();
     return client.updateFullComputer(params, id_equipment);
 }
 
-//*Actualizar solo algunos datos de la computadora
+//*Actualizar algun dato en especifico del Equipo
 function updatePartialComputer(params: Partial<NewComputer>, id_equipment: string) {
     const client = getComputersUtils();
     return client.updatePartialComputer(params, id_equipment);
 }
 
-//*Eliminar las computadoras
+//*Eliminar el Equipo por id
 function deleteComputer(id_equipment: string) {
     const client = getComputersUtils();
     return client.deleteComputer(id_equipment);
 
 }
 
-//!Convierte los datos del user a QR
+//*Convierte los datos del Equipo a QR
 async function createComputerQR(id_unit: string) {
     const client = getComputersUtils();
     const computer = await client.getComputerById(id_unit);
@@ -67,26 +66,26 @@ async function createComputerQR(id_unit: string) {
     }
 
     const formattedData = `
-    Información:
-    id_equipment: ${computer.id_equipment}
-    id_unit: ${computer.id_unit}
-    equipment_type: ${computer.equipment_type}
-    brand: ${computer.brand}
-    model: ${computer.model}
-    serial_number: ${computer.serial_number}
-    operating_system: ${computer.operating_system}
-    memory_capacity: ${computer.memory_capacity}
-    disk_capacity: ${computer.disk_capacity}
-    architecture: ${computer.architecture}
-    processor_brand: ${computer.processor_brand}
-    processor_model: ${computer.processor_model}
-    processor_speed: ${computer.processor_speed}
-    inventory_number: ${computer.inventory_number}
-    internet: ${computer.internet}
-    connection_type: ${computer.connection_type}
-    entry_type: ${computer.entry_type}
-    location: ${computer.location}
-    comments: ${computer.comments}
+    INFORMACIÓN
+    Identificación del equipo: ${computer.id_equipment}
+    Identificación de la unidad: ${computer.id_unit}
+    Tipo de equipo: ${computer.equipment_type}
+    Marca: ${computer.brand}
+    Modelo: ${computer.model}
+    Número de serie: ${computer.serial_number}
+    Sistema operativo: ${computer.operating_system}
+    Capacidad de memoria: ${computer.memory_capacity}
+    Capacidad del disco: ${computer.disk_capacity}
+    Arquitectura: ${computer.architecture}
+    Marca del procesador: ${computer.processor_brand}
+    Modelo del procesador: ${computer.processor_model}
+    Velocidad del procesador: ${computer.processor_speed}
+    Número de inventario: ${computer.inventory_number}
+    Conexión a internet: ${computer.internet}
+    Tipo de conexión: ${computer.connection_type}
+    Tipo de entrada: ${computer.entry_type}
+    Ubicación: ${computer.location}
+    Comentarios: ${computer.comments}
     `;
     return client.createComputerQR(formattedData.trim());
 }

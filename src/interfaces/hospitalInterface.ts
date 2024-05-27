@@ -1,6 +1,6 @@
 import { Connection } from "mysql2/promise";
 
-//*Datos del Hospital
+//*Datos completos de la Unidad Medica
 export type HospitalData = {
     id_unit: number;
     unit_clue: string;
@@ -15,7 +15,7 @@ export type HospitalData = {
     pharmacy: boolean;
 }
 
-//*Datos a Editar para el nuevo hospital
+//*Datos almacenados de la Unidad Medica
 export interface NewHospitalData {
     unit_clue?: string;
     unit_name: string;
@@ -29,7 +29,7 @@ export interface NewHospitalData {
     pharmacy: boolean;
 }
 
-//*Datos para un nuevo hospital
+//*Datos para una nueva Unidad Medica
 export interface NewHospital{
     unit_clue: string;
     unit_name: string;

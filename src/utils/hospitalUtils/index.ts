@@ -4,9 +4,10 @@ import 'dotenv/config';
 import QRCode from 'qrcode'
 
 
-//*UTILS HOSPITAL
+//*UTILS de Unidades Medicas
 export class HospitalsUtils {
 
+    //*Conexión con la Base de Datos
     private databaseConexion: Connection;
     private static instance;
 
@@ -21,7 +22,7 @@ export class HospitalsUtils {
         return HospitalsUtils.instance;
     }
 
-    //*Consulta en la base de datos
+    //*Transforma los resultados de una consulta a la Base de Datos en un objeto 
     getDataFromDatabase(data: any): HospitalData {
         return {
             unit_clue: data.unit_clue,
@@ -38,14 +39,21 @@ export class HospitalsUtils {
         }
     }
 
-    //*Obtener todas los Hospitales por la base de datos
+    //*Comprobacion de Unidades Medicas ya existentes
+    async exitsHospital(unit_name: string): Promise<boolean> {
+        const query = "SELECT * FROM medical_units WHERE unit_name = ?";
+        const [rows] = await this.databaseConexion.query(query, [unit_name]);
+        return Array.isArray(rows) && rows.length > 0;
+    }
+
+    //*Obtiene todas las Unidades Medicas registradas en la Base de Datos
     async getHospitals(): Promise<any> {
         const query = "SELECT * FROM medical_units";
         const [rows] = await this.databaseConexion.query(query);
         return rows
     }
 
-    //*Obtener hospital por id
+    //*Obtiene una Unidad Medica por id
     async getHospitalById(id_unit: string): Promise<boolean | HospitalData> {
         const query = "SELECT * FROM medical_units WHERE id_unit = ?";
         const [rows] = await this.databaseConexion.query(query, [id_unit]);
@@ -56,7 +64,7 @@ export class HospitalsUtils {
         return false;
     }
 
-    //*Obtener hospital por clue unit
+    //*Obtiene una Unidad Medica por clue unit
     async getHospitalByUnitClue(unit_clue: string): Promise<boolean | HospitalData> {
         const query = "SELECT * FROM medical_units WHERE unit_clue = ?";
         const [rows] = await this.databaseConexion.query(query, [unit_clue]);
@@ -67,7 +75,7 @@ export class HospitalsUtils {
         return false;
     }
 
-    //*Obtener hospital por nombre
+    //*Obtiene una Unidad Medica por su nombre
     async getHospitalByName(unit_name: string): Promise<boolean | HospitalData> {
         const query = "SELECT * FROM medical_units WHERE unit_name = ?";
         const [rows] = await this.databaseConexion.query(query, [unit_name]);
@@ -78,14 +86,7 @@ export class HospitalsUtils {
         return false;
     }
 
-    //*Hospitales existentes
-    async exitsHospital(unit_name: string): Promise<boolean> {
-        const query = "SELECT * FROM medical_units WHERE unit_name = ?";
-        const [rows] = await this.databaseConexion.query(query, [unit_name]);
-        return Array.isArray(rows) && rows.length > 0;
-    }
-
-    //*Inserción de una nuevo Hospital
+    //*Inserción de una nueva Unidad Medica en la Base de Datos
     async newHospital(params: NewHospitalData) {
 
         const query = "INSERT INTO medical_units ( unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy) VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -98,7 +99,7 @@ export class HospitalsUtils {
         return result;
     }
 
-    //*Actualizar todos los campos del Hospital
+    //*Actualiza todos los datos de una Unidad Medica
     async updateFullHospital(params: NewHospitalData, id_unit: string) {
 
         const query = "UPDATE medical_units SET unit_clue = ?, unit_name = ?, attention_level = ?, internet = ?, enabled_offices = ?, SINERHIAS_office = ?, administrator_name = ?, phone_number = ?, simba_use = ?, pharmacy = ? WHERE id_unit = ?";
@@ -107,7 +108,7 @@ export class HospitalsUtils {
         return result;
     }
 
-    //*Actualizar por partes el Hospital
+    //*Actualiza algun dato especifico de la Unidad Medica
     async updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string) {
         const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = params;
         let consulta = "UPDATE medical_units SET ";
@@ -169,23 +170,14 @@ export class HospitalsUtils {
         return result;
     }
 
-    //*Eliminar Hospital
+    //*Elimina un Unidad Medica por su id
     async deleteHospital(id_unit: string) {
         const query = "DELETE FROM medical_units WHERE id_unit = " + id_unit;
         const result = await this.databaseConexion.query(query);
         return result
     }
 
-    //!Crear Codigo QR para almacenamiento de los atributos del User
-    async createQR(data: string): Promise<string> {
-        try {
-            return await QRCode.toDataURL(data);
-        } catch (err) {
-            console.error('Error generating QR:', err);
-            throw err;
-        }
-    }
-
+    //*Generar un código QR para almacenar los atributos de una Unidad Medica
     async createHospitalQR(data: string): Promise<string> {
         try {
             return await QRCode.toDataURL(data);

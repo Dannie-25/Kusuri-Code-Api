@@ -3,7 +3,15 @@ import Controller from "../controllers/computer"
 
 const routes = express.Router();
 
-//*Obtener los computers desde el controller
+//Todo:Rutas de la funciones - Obtiene la peticion de del controlador para ser transmitida al HTML
+
+//*Validar si ya esta existente un Equipo por su numero de serie
+function getComputer(request: Request, response: Response) {
+    const { serial_number } = request.params;
+    Controller.getComputer(serial_number)
+}
+
+//*Obtiene todos los equipos registrados
 function getComputers(request: Request, response: Response) {
     Controller.getComputers()
 
@@ -11,7 +19,7 @@ function getComputers(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Obtener los datos del equipo por id
+//*Obtiene los datos del Equipo por id
 function getComputerById(request: Request, response: Response) {
     const { id_equipment } = request.params
     Controller.getComputerById(id_equipment)
@@ -21,7 +29,7 @@ function getComputerById(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Obtener los datos de la Computadora por ID Unit
+//*Obtiene los datos del Equipo por id Unit
 function getComputerByIdUnit(request: Request, response: Response) {
     const { id_unit } = request.params
     Controller.getComputerByIdUnit(id_unit)
@@ -31,8 +39,7 @@ function getComputerByIdUnit(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//!Checar
-//*Obtener los datos de un equipo por name
+//*Obtiene los datos de un Equipo por su nombre
 function getComputerByName(request: Request, response: Response) {
     const { equipment_type } = request.params
     Controller.getComputerByName(equipment_type)
@@ -42,13 +49,7 @@ function getComputerByName(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Validar si ya esta existente una computadora por numero de serie
-function getComputer(request: Request, response: Response) {
-    const { serial_number } = request.params;
-    Controller.getComputer(serial_number)
-}
-
-//*Agregar computer, llamando al controller para la solicitud
+//*Agregar nuevo Equipo
 function newComputer(request: Request, response: Response) {
     const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = request.body;
 
@@ -79,7 +80,7 @@ function newComputer(request: Request, response: Response) {
         })
 }
 
-//*Actualizar todos los campos del computer desde el controller
+//*Actualizar todos los campos del Equipo
 function updateFullComputer(request: Request, response: Response) {
     
     const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment} = request.body;
@@ -107,7 +108,7 @@ function updateFullComputer(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Actualizar algunos campos del computer desde el controller
+//*Actualizar algun dato en especifico del Equipo
 function updatePartialComputer(request: Request, response: Response) {
     const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = request.body;
     const { id_equipment } = request.params;
@@ -137,6 +138,7 @@ function updatePartialComputer(request: Request, response: Response) {
         .catch((error) => response.send(error));
 }
 
+//*Eliminar un Equipo por id
 function deleteComputer(request: Request, response: Response){
     const { id_equipment } = request.params;
     Controller.deleteComputer(id_equipment)
@@ -147,7 +149,7 @@ function deleteComputer(request: Request, response: Response){
         .catch((error) => response.send(error))
 }
 
-//!Obtener los datos de un equipo por id para qr
+//*Obtiene los datos de un Equipo por id para generar el QR
 async function createComputerQR(request: Request, response: Response) {
     const { id_equipment } = request.params;
     try {
@@ -176,7 +178,4 @@ routes.patch("/:id_equipment", updatePartialComputer);
 routes.delete("/:id_equipment", deleteComputer);
 routes.get("/qr/:id_equipment", createComputerQR);
 
-routes.get('/test', (req, res) => {
-    res.send('Ruta de prueba funcionando');
-});
 export default routes;

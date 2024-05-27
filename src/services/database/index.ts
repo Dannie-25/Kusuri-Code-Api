@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2/promise';
 import "dotenv/config"
 
-//*Conexión a la base de datos con su configuración
+//*Conexión a la Base de Datos
 const access: mysql.ConnectionOptions = {
     user: process.env.DB_USER,
     database: process.env.DB_NAME,

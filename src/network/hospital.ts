@@ -3,13 +3,23 @@ import Controller from "../controllers/hospital"
 
 const routes = express.Router();
 
-//*Validar si ya existe un hospital por la unidad
+//Todo:Rutas de la funciones - Obtiene la peticion de del controlador para ser transmitida al HTML
+
+//*Valida si ya existe una Unidad Medica por su unit clue
 function getHospital(request: Request, response: Response) {
     const { unit_clue } = request.params;
     Controller.getHospital(unit_clue)
 }
 
-//*Obtener los datos de la unidad por id
+//*Obtiene todas la Unidades Medicas registradas
+function getHospitals(request: Request, response: Response) {
+    Controller.getHospitals()
+
+        .then((result) => response.send(result.rows))
+        .catch((error) => response.send(error))
+}
+
+//*Obtiene los datos de la Unidad Medica por id
 function getHospitalById(request: Request, response: Response) {
     const { id_unit } = request.params
     Controller.getHospitalById(id_unit)
@@ -19,7 +29,7 @@ function getHospitalById(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Obtener los datos de la unidad por Unit Clue
+//*Obtiene los datos de la Unidad Medica por unit clue
 function getHospitalByUnitClue(request: Request, response: Response) {
     const { unit_clue } = request.params
     Controller.getHospitalByUnitClue(unit_clue)
@@ -29,7 +39,7 @@ function getHospitalByUnitClue(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Obtener los datos de la unidad por el nombre
+//*Obtiene los datos de la Unidad Medica por el nombre
 function getHospitalByName(request: Request, response: Response) {
     const { unit_name } = request.params
     Controller.getHospitalByName(unit_name)
@@ -39,7 +49,7 @@ function getHospitalByName(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Agregar hospital, llamando al controller para la solicitud
+//*Agrega una nueva Unidad Medica
 function newHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = request.body;
 
@@ -62,17 +72,7 @@ function newHospital(request: Request, response: Response) {
         })
 }
 
-//Todo: POST Y PATCH
-
-//*Obtener los hospitales desde el controller
-function getHospitals(request: Request, response: Response) {
-    Controller.getHospitals()
-
-        .then((result) => response.send(result.rows))
-        .catch((error) => response.send(error))
-}
-
-//*Actualizar todos los campos del hospital desde el controller
+//*Actualiza todos los datos de la Unidad Medica
 function updateFullHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy, id_unit } = request.body;
     Controller.updateFullHospital({
@@ -91,7 +91,7 @@ function updateFullHospital(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Actualizar algunos campos del hospital desde el controller
+//*Actualiza algunos datos de la Unidad Medica
 function updatePartialHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = request.body;
     const { id_unit } = request.params;
@@ -113,17 +113,18 @@ function updatePartialHospital(request: Request, response: Response) {
         .catch((error) => response.send(error));
 }
 
+//*Elimina una Unidad Medica por id
 function deleteHospital(request: Request, response: Response){
     const { id_unit } = request.params;
     Controller.deleteHospital(id_unit)
         .then((result) => {
-            console.log('Hospital deleted')
+            console.log('Unidad Medica deleted')
             response.send(result)
     })
         .catch((error) => response.send(error))
 }
 
-//!Obtener los datos de la unidad por id para qr
+//*Obtiene los datos de la Unidad Medica por id para generar el QR
 async function createHospitalQR(request: Request, response: Response) {
     const { id_unit } = request.params;
     try {
@@ -134,7 +135,6 @@ async function createHospitalQR(request: Request, response: Response) {
     }
 }
 
-
 //*Todas las rutas para realizar consultas
 routes.get("/", getHospital);
 routes.get("/all", getHospitals);
@@ -143,7 +143,7 @@ routes.get("/unit_clue/:unit_clue", getHospitalByUnitClue);
 routes.get("/unit_name/:unit_name", getHospitalByName);
 routes.post("/", newHospital);
 routes.put("/:id_unit", (req, res) => {
-    const { id_unit } = req.params; //? Captura el id_equipment de la URL
+    const { id_unit } = req.params; //? Captura el id_unit de la URL
     const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
     Controller.updateFullHospital(params, id_unit)
         .then(result => res.send(result))

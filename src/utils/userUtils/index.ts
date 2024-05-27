@@ -6,10 +6,10 @@ import { NewHospitalData, HospitalData } from "../../interfaces/hospitalInterfac
 import 'dotenv/config';
 import QRCode from 'qrcode'
 
-//*UTILS USER
+//*UTILS de Usuarios
 export class UsersUtils {
 
-    //*Conexión a la base de datos
+    //*Conexión a la Base de Datos
     private databaseConexion: Connection;
     private static instance;
 
@@ -24,7 +24,7 @@ export class UsersUtils {
         return UsersUtils.instance;
     }
 
-    //*Consulta en la base de datos
+    //*Transforma los resultados de una consulta a la Base de Datos en un objeto 
     getDataFromDatabase(data: any): UserData {
         return {
             id_user: data.id_user,
@@ -35,14 +35,21 @@ export class UsersUtils {
         }
     }
 
-    //*Obtener todos los usuarios de la base de datos
+    //*Comprobacion de Usuarios ya existentes
+    async exitsUser(email: string): Promise<boolean> {
+        const query = "SELECT * FROM users WHERE email = ?";
+        const [rows] = await this.databaseConexion.query(query, [email]);
+        return Array.isArray(rows) && rows.length > 0;
+    }
+
+    //*Obtiene todos los Usuarios de la Base de Datos
     async getUsers(): Promise<any> {
         const query = "SELECT * FROM users";
         const [rows] = await this.databaseConexion.query(query);
         return rows
     }
 
-    //*Consultar usuario por id
+    //*Obtiene Usuario por id
     async getUserById(id_user: string): Promise<boolean | UserData> {
         const query = "SELECT * FROM users WHERE id_user = ?";
         const [rows] = await this.databaseConexion.query(query, [id_user]);
@@ -53,7 +60,7 @@ export class UsersUtils {
         return false;
     }
 
-    //*Consultar usuario por email
+    //*Obtiene Usuario por email
     async getUserByEmail(email: string): Promise<boolean | UserData> {
         const query = "SELECT * FROM users WHERE email = ?";
         const [rows] = await this.databaseConexion.query(query, [email]);
@@ -64,14 +71,7 @@ export class UsersUtils {
         return false;
     }
 
-    //*Usuarios existentes
-    async exitsUser(email: string): Promise<boolean> {
-        const query = "SELECT * FROM users WHERE email = ?";
-        const [rows] = await this.databaseConexion.query(query, [email]);
-        return Array.isArray(rows) && rows.length > 0;
-    }
-
-    //*Inserción de nuevo usuario
+    //*Inserción de nuevo Usuario
     async newUser(params: NewUserData) {
 
         const query = "INSERT INTO users (names, lastNames, email, password) VALUES (?, ?, ?, ?)";
@@ -85,7 +85,7 @@ export class UsersUtils {
         return result;
     }
 
-    //*Actualizar todos los campos de usuario 
+    //*Actualiza todos los datos del Usuario 
     async updateFullUser(params: NewUserData, id_user: string) {
 
         const query = "UPDATE users SET names = ?, lastNames = ?, email = ?, password = ? WHERE id_user = ?";
@@ -95,7 +95,7 @@ export class UsersUtils {
         return result;
     }
 
-    //*Actualizar por partes al usuario
+    //*Actualiza algun dato especifico del Usuario
     async updatePartialUser(params: Partial<NewUserData>, id_user: string) {
         const { names, lastNames, email, password } = params;
         let consulta = "UPDATE users SET ";
@@ -129,20 +129,10 @@ export class UsersUtils {
         return result;
     }
 
-    //*Eliminar usuario
+    //*Elimina un Usuario por su id
     async deleteUser(id_user: string) {
         const query = "DELETE FROM users WHERE id_user = " + id_user;
         const result = await this.databaseConexion.query(query);
         return result
-    }
-
-    //!Crear Codigo QR para almacenamiento de los atributos del User
-    async createUserQR(data: string): Promise<string> {
-        try {
-            return await QRCode.toDataURL(data);
-        } catch (err) {
-            console.error('Error generating QR:', err);
-            throw err;
-        }
     }
 }

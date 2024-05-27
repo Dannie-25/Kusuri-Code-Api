@@ -5,13 +5,15 @@ import Controller from "../controllers/user"
 
 const routes = express.Router();
 
+//Todo:Rutas de la funciones - Obtiene la peticion de del controlador para ser transmitida al HTML
+
 //*Validar si ya esta existente un correo electronico
 function getUser(request: Request, response: Response) {
     const { email } = request.params;
     Controller.getUser(email)
 }
 
-//*Obtener los datos de un usuario por id
+//*Obtiene los datos del Usuario por id
 function getUserById(request: Request, response: Response) {
     const { id_user } = request.params
     Controller.getUserById(id_user)
@@ -21,7 +23,7 @@ function getUserById(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Obtener los datos de un usuario por email
+//*Obtiene los datos de un Usuario por email
 function getUserByEmail(request: Request, response: Response) {
     const { email } = request.params
     Controller.getUserByEmail(email)
@@ -31,7 +33,7 @@ function getUserByEmail(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Login de usuario con metodos de tratamientos de errores
+//*Login del Usuario
 function login(request: Request, response: Response) {
     passport.authenticate(
         'local',
@@ -53,14 +55,14 @@ function login(request: Request, response: Response) {
     )(request, response)
 }
 
-//*Obtener los usuarios desde el controller
+//*Obtiene todos los Usuarios registrados
 function getUsers(request: Request, response: Response) {
     Controller.getUsers()
         .then((result) => response.send(result))
         .catch((error) => response.send(error))
 }
 
-//*Agregar un usuario, llamando al controller para la solicitud
+//*Agrega un nuevo Usuario
 function newUser(request: Request, response: Response) {
     const { names, lastNames, email, password } = request.body;
 
@@ -77,7 +79,7 @@ function newUser(request: Request, response: Response) {
         })
 }
 
-//*Actualizar todos los campos del usuario desde el controller
+//*Actualiza todos los datos del Usuario
 function updateFullUser(request: Request, response: Response) {
     const { names, lastNames, email, password, id_user } = request.body;
     Controller.updateFullUser({
@@ -90,7 +92,7 @@ function updateFullUser(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Actualizar algunos campos del usuario desde el controller
+//*Actualiza algun dato en especifico del Usuario
 function updatePartialUser(request: Request, response: Response) {
     const { names, lastNames, email, password } = request.body;
     const { id_user } = request.params;
@@ -106,7 +108,7 @@ function updatePartialUser(request: Request, response: Response) {
         .catch((error) => response.send(error));
 }
 
-//*Eliminar un usuario desde el controller
+//*Elimina un Usuario por id
 function deleteUser(request: Request, response: Response) {
     const { id_user } = request.params
     Controller.deleteUser(id_user)
@@ -117,18 +119,6 @@ function deleteUser(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//!Obtener los datos de un usuario por id para qr
-async function createUserQR(request: Request, response: Response) {
-    const { id_user } = request.params;
-    try {
-        const qrUrl = await Controller.createUserQR(id_user);
-        response.send(`<img src="${qrUrl}" />`);
-    } catch (error) {
-        response.status(500).send(error.message);
-    }
-}
-
-
 //*Todas las rutas para realizar consultas
 routes.get("/", getUser);
 routes.get("/all", getUsers);
@@ -137,7 +127,7 @@ routes.get("/email/:email", getUserByEmail);
 routes.post("/login", login);
 routes.post("/", newUser);
 routes.put("/:id_user", (req, res) => {
-    const { id_user } = req.params; //? Captura el id_equipment de la URL
+    const { id_user } = req.params; //? Captura el id_user de la URL
     const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
     Controller.updateFullUser(params, id_user)
         .then(result => res.send(result))
@@ -145,6 +135,5 @@ routes.put("/:id_user", (req, res) => {
 });
 routes.patch("/:id_user", updatePartialUser);
 routes.delete("/:id_user", deleteUser);
-routes.get("/qr/:id_user", createUserQR);
 
 export default routes;

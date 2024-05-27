@@ -1,6 +1,6 @@
 import { Connection } from "mysql2/promise";
 
-//*Datos de la computer
+//*Datos completo del Equipo
 export type ComputerData = {
     id_equipment: number;
     id_unit: number;
@@ -23,7 +23,7 @@ export type ComputerData = {
     comments: string;
 }
 
-
+//*Datos almacenados del Equipo
 export interface NewComputerData {
     id_unit?: number;
     equipment_type: string;
@@ -45,7 +45,7 @@ export interface NewComputerData {
     comments: string;
 }
 
-//*Datos para un nuevo computer
+//*Datos para un nuevo Equipo
 export interface NewComputer{
     id_unit: number;
     equipment_type: string;

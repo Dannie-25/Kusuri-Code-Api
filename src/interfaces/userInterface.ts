@@ -1,6 +1,6 @@
 import { Connection } from "mysql2/promise";
 
-//*Datos del usuario
+//*Datos completos del Usuario
 export type UserData = {
     id_user: number;
     names: string;
@@ -9,7 +9,7 @@ export type UserData = {
     password: string;
 }
 
-//*Datos para extrar 
+//*Datos almacenados del Usuario
 export interface NewUserData {
     names?: string;
     lastNames: string;
@@ -17,7 +17,7 @@ export interface NewUserData {
     password: string;
 }
 
-//*Datos para un nuevo usuario
+//*Datos para un nuevo Usuario
 export interface NewUser{
     names: string;
     lastNames: string;
@@ -37,5 +37,4 @@ export interface UsersUtilsInterface {
     updateFullUser(params: NewUserData, id_user);
     updatePartialUser(params: Partial<NewUserData>, id_user: string);
     deleteUser(id_user:string);
-    createUserQR(id_user: string);
 }

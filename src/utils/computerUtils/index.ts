@@ -3,9 +3,10 @@ import { NewComputerData, ComputerData } from "../../interfaces/computerInterfac
 import 'dotenv/config';
 import QRCode from 'qrcode'
 
-//*UTILS COMOPUTER
+//*UTILS de Equipos
 export class ComputersUtils {
 
+    //*Conexión con la Base de Datos
     private databaseConexion: Connection;
     private static instance;
 
@@ -20,7 +21,7 @@ export class ComputersUtils {
         return ComputersUtils.instance;
     }
 
-    //*Consulta en la base de datos
+    //*Transforma los resultados de una consulta a la Base de Datos en un objeto 
     getDataFromDatabase(data: any): ComputerData {
         return {
             id_equipment: data.id_equipment,
@@ -45,7 +46,21 @@ export class ComputersUtils {
         }
     }
 
-    //*Obtener equipo por id
+    //*Comprobacion de Equipos ya existentes
+    async exitsComputer(serial_number: string): Promise<boolean> {
+        const query = "SELECT * FROM computer_equipment WHERE serial_number = ?";
+        const [rows] = await this.databaseConexion.query(query, [serial_number]);
+        return Array.isArray(rows) && rows.length > 0;
+    }
+
+    //*Obtiene todos los Equipos registrados en la Base de Datos
+    async getComputers(): Promise<any> {
+        const query = "SELECT * FROM computer_equipment";
+        const [rows] = await this.databaseConexion.query(query);
+        return rows
+    }
+
+    //*Obtiene un Equipo por su id
     async getComputerById(id_equipment: string): Promise<boolean | ComputerData> {
         const query = "SELECT * FROM computer_equipment WHERE id_equipment = ?";
         const [rows] = await this.databaseConexion.query(query, [id_equipment]);
@@ -56,8 +71,7 @@ export class ComputersUtils {
         return false;
     }
 
-    //?Checar
-    //*Obtener equipo por id de unidad
+    //*Obtiene un Equipo por id de unidad
     async getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData> {
         const query = "SELECT * FROM computer_equipment WHERE id_unit = ?";
         const [rows] = await this.databaseConexion.query(query, [id_unit]);
@@ -68,7 +82,7 @@ export class ComputersUtils {
         return false;
     }
 
-    //*Obtener el equipo por nombre
+    //*Obtiene el Equipo por su nombre
     async getComputerByName(equipment_type: string): Promise<boolean | ComputerData> {
         const query = "SELECT * FROM computer_equipment WHERE equipment_type = ?";
         const [rows] = await this.databaseConexion.query(query, [equipment_type]);
@@ -79,22 +93,7 @@ export class ComputersUtils {
         return false;
     }
 
-    //*Obtener todas las computers por la base de datos
-    async getComputers(): Promise<any> {
-        const query = "SELECT * FROM computer_equipment";
-        const [rows] = await this.databaseConexion.query(query);
-        return rows
-    }
-
-    //*Computers existentes
-    async exitsComputer(serial_number: string): Promise<boolean> {
-        const query = "SELECT * FROM computer_equipment WHERE serial_number = ?";
-        const [rows] = await this.databaseConexion.query(query, [serial_number]);
-        return Array.isArray(rows) && rows.length > 0;
-    }
-
-
-    //*Inserción de una nueva computer
+    //*Inserción de un nuevo Equipo en la Base de Datos
     async newComputer(params: NewComputerData) {
 
         const query = "INSERT INTO computer_equipment (id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -106,7 +105,8 @@ export class ComputersUtils {
         const result = await this.databaseConexion.query(query, [id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments]);
         return result;
     }
-    //*Actualizar todos los campos de la computer
+
+    //*Actualiza todos los datos del Equipo
     async updateFullComputer(params: NewComputerData, id_equipment: string) {
 
         const query = "UPDATE computer_equipment SET equipment_type = ?, brand = ?, model = ?, serial_number = ?, operating_system = ?, memory_capacity = ?, disk_capacity = ?, architecture = ?, processor_brand = ?, processor_model = ?, processor_speed = ?, inventory_number = ?, internet = ?, connection_type = ?, entry_type = ?, location= ?, comments = ? WHERE id_equipment = ?";
@@ -114,7 +114,8 @@ export class ComputersUtils {
         const result = await this.databaseConexion.query(query, [equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment]);
         return result;
     }
-    //*Actualizar por partes a la computer
+
+    //*Actualiza algun dato especifico del Equipo
     async updatePartialComputer(params: Partial<NewComputerData>, id_equipment: string) {
         const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = params;
         let consulta = "UPDATE computer_equipment SET ";
@@ -216,23 +217,14 @@ export class ComputersUtils {
         return result;
     }
 
-    //*Eliminar computer
+    //*Elimina un Equipo por su id
     async deleteComputer(id_equipment: string) {
         const query = "DELETE FROM computer_equipment WHERE id_equipment = " + id_equipment;
         const result = await this.databaseConexion.query(query);
         return result
     }
 
-    //!Crear Codigo QR para almacenamiento de los atributos del User
-    async createQR(data: string): Promise<string> {
-        try {
-            return await QRCode.toDataURL(data);
-        } catch (err) {
-            console.error('Error generating QR:', err);
-            throw err;
-        }
-    }
-
+    //*Generar un código QR para almacenar los atributos de un Equipo
     async createComputerQR(data: string): Promise<string> {
         try {
             return await QRCode.toDataURL(data);
