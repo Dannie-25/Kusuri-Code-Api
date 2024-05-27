@@ -2,13 +2,14 @@ import { Connection } from "mysql2/promise";
 
 //*Datos del usuario
 export type UserData = {
-    id: number;
+    id_user: number;
     names: string;
     lastNames: string;
     email: string;
     password: string;
 }
 
+//*Datos para extrar 
 export interface NewUserData {
     names?: string;
     lastNames: string;
@@ -31,10 +32,10 @@ export interface UsersUtilsInterface {
     getInstance(db: Connection);
     getUsers();
     getUserByEmail(email: string): Promise<boolean | UserData>;
-    getUserById(id: string): Promise<boolean | UserData>;
+    getUserById(id_user: string): Promise<boolean | UserData>;
     newUser(params: NewUserData);
-    updateFullUser(params: NewUserData, id);
-    updatePartialUser(params: Partial<NewUserData>, id: string);
-    deleteUser(id:string);
-    createUserQR(id: string);
+    updateFullUser(params: NewUserData, id_user);
+    updatePartialUser(params: Partial<NewUserData>, id_user: string);
+    deleteUser(id_user:string);
+    createUserQR(id_user: string);
 }

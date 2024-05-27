@@ -3,9 +3,9 @@ import { DependencyLocator } from "./dependenciesLocator";
 import database from "../database";
 import { UsersUtils } from "../../utils/userUtils";
 import { UsersUtilsInterface } from "../../interfaces/userInterface";
-import { ComputersUtils } from "../../utils/userUtils";
+import { ComputersUtils } from "../../utils/computerUtils";
 import { ComputersUtilsInterface } from "../../interfaces/computerInterface";
-import { HospitalsUtils } from "../../utils/userUtils";
+import { HospitalsUtils } from "../../utils/hospitalUtils";
 import { HospitalsUtilsInterface } from "../../interfaces/hospitalInterface";
 
 export const di = DependencyLocator.getInstance();
@@ -42,6 +42,7 @@ export async function initial(){
     );
 }
 
+//*Conexión a Data Base
 function getDatabase():Connection{
     return di.get(types.database)
 }

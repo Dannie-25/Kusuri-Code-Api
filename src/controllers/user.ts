@@ -1,7 +1,7 @@
 import {NewUser} from "../interfaces/userInterface";
 import { getUsersUtils } from "../services/serviceLocator/composer";
 import { UsersUtils } from "../utils/userUtils";
-
+import { UserData } from "../interfaces/userInterface";
 
 
 //*Obtener el email para validación
@@ -21,28 +21,28 @@ function newUser(params:NewUser){
 }
 
 //*Actualizar todo los datos del usuario
-function updateFullUser(params: NewUser, id: string){
+function updateFullUser(params: NewUser, id_user: string){
     const client = getUsersUtils();
-    return client.updateFullUser(params, id);
+    return client.updateFullUser(params, id_user);
 }
 
 //*Actualizar solo algunos datos del usuario
-function updatePartialUser(params: Partial<NewUser>, id: string){
+function updatePartialUser(params: Partial<NewUser>, id_user: string){
     const client = getUsersUtils();
-    return client.updatePartialUser(params, id);
+    return client.updatePartialUser(params, id_user);
 
 }
 
 //*Eliminar los datos del usuarios
-function deleteUser(id: string){
+function deleteUser(id_user: string){
     const client = getUsersUtils();
-    return client.deleteUser(id);
+    return client.deleteUser(id_user);
 }
 
 //*Obtiene usuario por ID
-function getUserById(id: string){
+function getUserById(id_user: string){
     const client = getUsersUtils();
-    return client.getUserById(id);
+    return client.getUserById(id_user);
 }
 
 //*Obtiene usuario por email
@@ -51,26 +51,32 @@ function getUserByEmail(email: string){
     return client.getUserByEmail(email);
 }
 
-//!Convierte los datos del user a QR
-async function createUserQR(id: string) {
+//*Convierte los datos del user a QR
+/**function createUserQR(id: string){
     const client = getUsersUtils();
-    const user = await client.getUserById(id);
+    //return client.createUserQR(id);
+}*/
+
+
+//!Convierte los datos del user a QR
+async function createUserQR(id_user: string) {
+    const client = getUsersUtils();
+    const user = await client.getUserById(id_user);
 
     if (!user || typeof user === 'boolean') {
         throw new Error('Usuario no encontrado');
     }
 
-    const formattedData =`
-    Informacion:
-    Nombre: ${user.names}
-    Apellido: ${user.lastNames}
-    Email: ${user.email}
-    Password: ${user.password}
+    // Formatear los datos del usuario
+    const formattedData = `
+        Name: ${user.names}
+        Last Name: ${user.lastNames}
+        Email: ${user.email}
+        Password: ${user.password}
     `;
 
-    return client.createUserQR(formattedData.trim());
+    return client.createUserQR(formattedData);
 }
-
 
 
 export default {

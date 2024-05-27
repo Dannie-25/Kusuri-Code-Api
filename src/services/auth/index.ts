@@ -32,7 +32,7 @@ passport.use('local', new LocalStrategy({
             }
             if (typeof user === 'object' && password === encryptedPassword) {
                 const userData = {
-                    id: user.id,
+                    id_user: user.id_user,
                     names: user.names,
                     lastNames: user.lastNames,
                     email: user.email,

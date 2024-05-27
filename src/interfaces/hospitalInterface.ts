@@ -3,43 +3,43 @@ import { Connection } from "mysql2/promise";
 //*Datos del Hospital
 export type HospitalData = {
     id_unit: number;
-    clue_unit: string;
-    name: string;
-    leve_attention: string;
+    unit_clue: string;
+    unit_name: string;
+    attention_level: string;
     internet: boolean;
-    authorized_office: boolean;
-    NIS_office: boolean;
+    enabled_offices: boolean;
+    SINERHIAS_office: boolean;
     administrator_name: string;
-    telephone_number: number;
-    sinba: boolean;
+    phone_number: number;
+    simba_use: boolean;
     pharmacy: boolean;
 }
 
 //*Datos a Editar para el nuevo hospital
 export interface NewHospitalData {
-    clue_unit?: string;
-    name: string;
-    leve_attention: string;
+    unit_clue?: string;
+    unit_name: string;
+    attention_level: string;
     internet: boolean;
-    authorized_office: boolean;
-    NIS_office: boolean;
+    enabled_offices: boolean;
+    SINERHIAS_office: boolean;
     administrator_name: string;
-    telephone_number: number;
-    sinba: boolean;
+    phone_number: number;
+    simba_use: boolean;
     pharmacy: boolean;
 }
 
 //*Datos para un nuevo hospital
 export interface NewHospital{
-    clue_unit: string;
-    name: string;
-    leve_attention: string;
+    unit_clue: string;
+    unit_name: string;
+    attention_level: string;
     internet: boolean;
-    authorized_office: boolean;
-    NIS_office: boolean;
+    enabled_offices: boolean;
+    SINERHIAS_office: boolean;
     administrator_name: string;
-    telephone_number: number;
-    sinba: boolean;
+    phone_number: number;
+    simba_use: boolean;
     pharmacy: boolean;
 }
 
@@ -49,10 +49,12 @@ export interface HospitalsUtilsInterface {
 
     getInstance(db: Connection);
     getHospitals();
-    getHospitalByName(name: string): Promise<boolean | HospitalData>;
     getHospitalById(id_unit: string): Promise<boolean | HospitalData>;
+    getHospitalByName(unit_name: string): Promise<boolean | HospitalData>;
+    getHospitalByUnitClue(unit_clue: string): Promise<boolean | HospitalData>;
     newHospital(params: NewHospitalData);
     updateFullHospital(params: NewHospitalData, id_unit);
     updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string);
     deleteHospital(id_unit:String);
+    createHospitalQR(id_unit: string);
 }

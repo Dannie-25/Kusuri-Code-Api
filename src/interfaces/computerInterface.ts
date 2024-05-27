@@ -2,9 +2,9 @@ import { Connection } from "mysql2/promise";
 
 //*Datos de la computer
 export type ComputerData = {
-    id_computer: number;
+    id_equipment: number;
     id_unit: number;
-    device_type: string;
+    equipment_type: string;
     brand: string;
     model: string;
     serial_number: string;
@@ -12,13 +12,13 @@ export type ComputerData = {
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_band:string;
+    processor_brand:string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
     internet: boolean;
     connection_type: string;
-    input_type: string;
+    entry_type: string;
     location: string;
     comments: string;
 }
@@ -26,7 +26,7 @@ export type ComputerData = {
 
 export interface NewComputerData {
     id_unit?: number;
-    device_type: string;
+    equipment_type: string;
     brand: string;
     model: string;
     serial_number: string;
@@ -34,13 +34,13 @@ export interface NewComputerData {
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_band:string;
+    processor_brand:string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
     internet: boolean;
     connection_type: string;
-    input_type: string;
+    entry_type: string;
     location: string;
     comments: string;
 }
@@ -48,7 +48,7 @@ export interface NewComputerData {
 //*Datos para un nuevo computer
 export interface NewComputer{
     id_unit: number;
-    device_type: string;
+    equipment_type: string;
     brand: string;
     model: string;
     serial_number: string;
@@ -56,13 +56,13 @@ export interface NewComputer{
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_band:string;
+    processor_brand:string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
     internet: boolean;
     connection_type: string;
-    input_type: string;
+    entry_type: string;
     location: string;
     comments: string;
 }
@@ -73,10 +73,12 @@ export interface ComputersUtilsInterface {
 
     getInstance(db: Connection);
     getComputers();
-    getComputerBySerialNumber(serial_number: string): Promise<boolean | ComputerData>;
-    getComputerById(id_computer: string): Promise<boolean | ComputerData>;
+    getComputerById(id_equipment: string): Promise<boolean | ComputerData>;
+    getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData>;
+    getComputerByName(equipment_type: string): Promise<boolean | ComputerData>;
     newComputer(params: NewComputerData);
-    updateFullComputer(params: NewComputerData, id_computer);
-    updatePartialComputer(params: Partial<NewComputerData>, id_computer: string);
-    deleteComputer(id_computer:String);
+    updateFullComputer(params: NewComputerData, id_equipment);
+    updatePartialComputer(params: Partial<NewComputerData>, id_equipment: string);
+    deleteComputer(id_equipment:String);
+    createComputerQR(id_equipment: string);
 }

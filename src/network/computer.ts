@@ -11,6 +11,37 @@ function getComputers(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
+//*Obtener los datos del equipo por id
+function getComputerById(request: Request, response: Response) {
+    const { id_equipment } = request.params
+    Controller.getComputerById(id_equipment)
+    .then((result) => {
+        response.send(result)
+    })
+        .catch((error) => response.send(error))
+}
+
+//*Obtener los datos de la Computadora por ID Unit
+function getComputerByIdUnit(request: Request, response: Response) {
+    const { id_unit } = request.params
+    Controller.getComputerByIdUnit(id_unit)
+    .then((result) => {
+        response.send(result)
+    })
+        .catch((error) => response.send(error))
+}
+
+//!Checar
+//*Obtener los datos de un equipo por name
+function getComputerByName(request: Request, response: Response) {
+    const { equipment_type } = request.params
+    Controller.getComputerByName(equipment_type)
+    .then((result) => {
+        response.send(result)
+    })
+        .catch((error) => response.send(error))
+}
+
 //*Validar si ya esta existente una computadora por numero de serie
 function getComputer(request: Request, response: Response) {
     const { serial_number } = request.params;
@@ -19,11 +50,11 @@ function getComputer(request: Request, response: Response) {
 
 //*Agregar computer, llamando al controller para la solicitud
 function newComputer(request: Request, response: Response) {
-    const { id_unit, device_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_band, processor_model, processor_speed, inventory_number, internet, connection_type, input_type, location, comments } = request.body;
+    const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = request.body;
 
     Controller.newComputer({
         id_unit,
-        device_type,
+        equipment_type,
         brand,
         model,
         serial_number,
@@ -31,13 +62,13 @@ function newComputer(request: Request, response: Response) {
         memory_capacity,
         disk_capacity,
         architecture,
-        processor_band,
+        processor_brand,
         processor_model,
         processor_speed,
         inventory_number,
         internet,
         connection_type,
-        input_type,
+        entry_type,
         location,
         comments
     })
@@ -51,10 +82,10 @@ function newComputer(request: Request, response: Response) {
 //*Actualizar todos los campos del computer desde el controller
 function updateFullComputer(request: Request, response: Response) {
     
-    const { id_unit, device_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_band, processor_model, processor_speed, inventory_number, internet, connection_type, input_type, location, comments, id_computer} = request.body;
+    const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment} = request.body;
     Controller.updateFullComputer({
         id_unit,
-        device_type,
+        equipment_type,
         brand,
         model,
         serial_number,
@@ -62,27 +93,27 @@ function updateFullComputer(request: Request, response: Response) {
         memory_capacity,
         disk_capacity,
         architecture,
-        processor_band,
+        processor_brand,
         processor_model,
         processor_speed,
         inventory_number,
         internet,
         connection_type,
-        input_type,
+        entry_type,
         location,
         comments
-    }, id_computer)
+    }, id_equipment)
         .then((result) => response.send(result))
         .catch((error) => response.send(error))
 }
 
 //*Actualizar algunos campos del computer desde el controller
 function updatePartialComputer(request: Request, response: Response) {
-    const { id_unit, device_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_band, processor_model, processor_speed, inventory_number, internet, connection_type, input_type, location, comments } = request.body;
-    const { id_computer } = request.params;
+    const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = request.body;
+    const { id_equipment } = request.params;
     const partialComputerData = {
         id_unit,
-        device_type,
+        equipment_type,
         brand,
         model,
         serial_number,
@@ -90,25 +121,25 @@ function updatePartialComputer(request: Request, response: Response) {
         memory_capacity,
         disk_capacity,
         architecture,
-        processor_band,
+        processor_brand,
         processor_model,
         processor_speed,
         inventory_number,
         internet,
         connection_type,
-        input_type,
+        entry_type,
         location,
         comments
     };
 
-    Controller.updatePartialComputer(partialComputerData, id_computer)
+    Controller.updatePartialComputer(partialComputerData, id_equipment)
         .then((result) => response.send(result))
         .catch((error) => response.send(error));
 }
 
 function deleteComputer(request: Request, response: Response){
-    const { id_computer } = request.params;
-    Controller.deleteComputer(id_computer)
+    const { id_equipment } = request.params;
+    Controller.deleteComputer(id_equipment)
         .then((result) => {
             console.log('Computer deleted')
             response.send(result)
@@ -116,19 +147,36 @@ function deleteComputer(request: Request, response: Response){
         .catch((error) => response.send(error))
 }
 
+//!Obtener los datos de un equipo por id para qr
+async function createComputerQR(request: Request, response: Response) {
+    const { id_equipment } = request.params;
+    try {
+        const qrUrl = await Controller.createComputerQR(id_equipment);
+        response.send(`<img src="${qrUrl}" />`);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
+}
+
 //*Todas las rutas para realizar consultas
 routes.get("/all", getComputers);
 routes.get("/", getComputer);
+routes.get("/id_equipment/:id_equipment", getComputerById);
+routes.get("/id_unit/:id_unit", getComputerByIdUnit);
+routes.get("/equipment_type/:equipment_type", getComputerByName);
 routes.post("/", newComputer);
-//!Tratamiento de error para actualizar los datos de manera full
-routes.put("/:id_computer", (req, res) => {
-    const { id_computer } = req.params; //? Captura el id_computer de la URL
+routes.put("/:id_equipment", (req, res) => {
+    const { id_equipment } = req.params; //? Captura el id_equipment de la URL
     const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
-    Controller.updateFullComputer(params, id_computer)
+    Controller.updateFullComputer(params, id_equipment)
         .then(result => res.send(result))
         .catch(error => res.status(500).send(error));
 });
-routes.patch("/:id_computer", updatePartialComputer);
-routes.delete("/:id_computer", deleteComputer);
+routes.patch("/:id_equipment", updatePartialComputer);
+routes.delete("/:id_equipment", deleteComputer);
+routes.get("/qr/:id_equipment", createComputerQR);
 
+routes.get('/test', (req, res) => {
+    res.send('Ruta de prueba funcionando');
+});
 export default routes;
