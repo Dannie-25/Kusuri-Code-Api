@@ -3,10 +3,12 @@ import { DependencyLocator } from "./dependenciesLocator";
 import database from "../database";
 import { UsersUtils } from "../../utils/userUtils";
 import { UsersUtilsInterface } from "../../interfaces/userInterface";
-import { ComputersUtils } from "../../utils/computerUtils";
-import { ComputersUtilsInterface } from "../../interfaces/computerInterface";
 import { HospitalsUtils } from "../../utils/hospitalUtils";
 import { HospitalsUtilsInterface } from "../../interfaces/hospitalInterface";
+import { ComputersUtils } from "../../utils/computerUtils";
+import { ComputersUtilsInterface } from "../../interfaces/computerInterface";
+import { PrintersUtils } from "../../utils/printerUtils";
+import { PrintersUtilsInterface } from "../../interfaces/printerInterface";
 
 export const di = DependencyLocator.getInstance();
 
@@ -14,8 +16,9 @@ export const di = DependencyLocator.getInstance();
 const types ={
     database: "database",
     usersUtils: "usersUtils",
+    hospitalsUtils: "hospitalsUtils",
     computersUtils: "computersUtils",
-    hospitalsUtils: "hospitalsUtils"
+    printersUtils: "printersUtils",
 }
 
 //*Inyeccion de dependencias 
@@ -37,6 +40,12 @@ export async function initial(){
     di.bindFactory(
         "hospitalsUtils",
         () => new HospitalsUtils(
+            getDatabase()
+        )
+    );
+    di.bindFactory(
+        "printersUtils",
+        () => new PrintersUtils(
             getDatabase()
         )
     );
@@ -62,3 +71,7 @@ export function getComputersUtils(): ComputersUtilsInterface{
     return di.get(types.computersUtils)
 }
 
+//*Utils de Impresoras
+export function getPrintersUtils(): PrintersUtilsInterface{
+    return di.get(types.printersUtils)
+}

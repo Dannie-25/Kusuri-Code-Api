@@ -109,9 +109,9 @@ export class ComputersUtils {
     //*Actualiza todos los datos del Equipo
     async updateFullComputer(params: NewComputerData, id_equipment: string) {
 
-        const query = "UPDATE computer_equipment SET equipment_type = ?, brand = ?, model = ?, serial_number = ?, operating_system = ?, memory_capacity = ?, disk_capacity = ?, architecture = ?, processor_brand = ?, processor_model = ?, processor_speed = ?, inventory_number = ?, internet = ?, connection_type = ?, entry_type = ?, location= ?, comments = ? WHERE id_equipment = ?";
-        const { equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = params;
-        const result = await this.databaseConexion.query(query, [equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment]);
+        const query = "UPDATE computer_equipment SET id_unit = ?, equipment_type = ?, brand = ?, model = ?, serial_number = ?, operating_system = ?, memory_capacity = ?, disk_capacity = ?, architecture = ?, processor_brand = ?, processor_model = ?, processor_speed = ?, inventory_number = ?, internet = ?, connection_type = ?, entry_type = ?, location= ?, comments = ? WHERE id_equipment = ?";
+        const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = params;
+        const result = await this.databaseConexion.query(query, [id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment]);
         return result;
     }
 

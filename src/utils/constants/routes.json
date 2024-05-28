@@ -1,5 +1,6 @@
 {
     "user": "/v1/user",
+    "hospital": "/v1/hospital",
     "computer": "/v1/computer",
-    "hospital": "/v1/hospital"
+    "printer": "/v1/printer"
 }

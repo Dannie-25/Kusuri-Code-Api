@@ -55,6 +55,6 @@ export interface HospitalsUtilsInterface {
     newHospital(params: NewHospitalData);
     updateFullHospital(params: NewHospitalData, id_unit);
     updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string);
-    deleteHospital(id_unit:String);
+    deleteHospital(id_unit: string);
     createHospitalQR(id_unit: string);
 }

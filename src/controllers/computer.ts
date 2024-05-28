@@ -13,13 +13,13 @@ async function getComputers() {
     return client.getComputers();
 }
 
-//*Obtiene el equipo por Id
+//*Obtiene el Equipo por Id
 function getComputerById(id_equipment: string) {
     const client = getComputersUtils();
     return client.getComputerById(id_equipment);
 }
 
-//*Obtiene el Equipo por la clave de Unidad
+//*Obtiene el Equipo por la Id Unit
 function getComputerByIdUnit(id_unit: string) {
     const client = getComputersUtils();
     return client.getComputerByIdUnit(id_unit);

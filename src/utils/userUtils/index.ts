@@ -1,8 +1,6 @@
 import { Connection } from "mysql2/promise";
 import AES = require("crypto-js/aes");
 import { NewUserData, UserData } from "../../interfaces/userInterface";
-import { NewComputerData, ComputerData } from "../../interfaces/computerInterface";
-import { NewHospitalData, HospitalData } from "../../interfaces/hospitalInterface";
 import 'dotenv/config';
 import QRCode from 'qrcode'
 

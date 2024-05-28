@@ -40,9 +40,9 @@ export class HospitalsUtils {
     }
 
     //*Comprobacion de Unidades Medicas ya existentes
-    async exitsHospital(unit_name: string): Promise<boolean> {
-        const query = "SELECT * FROM medical_units WHERE unit_name = ?";
-        const [rows] = await this.databaseConexion.query(query, [unit_name]);
+    async exitsHospital(unit_clue: string): Promise<boolean> {
+        const query = "SELECT * FROM medical_units WHERE unit_clue = ?";
+        const [rows] = await this.databaseConexion.query(query, [unit_clue]);
         return Array.isArray(rows) && rows.length > 0;
     }
 
@@ -91,9 +91,9 @@ export class HospitalsUtils {
 
         const query = "INSERT INTO medical_units ( unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy) VALUES (?,?,?,?,?,?,?,?,?,?)";
         const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = params;
-        const existHospital = await this.exitsHospital(unit_name);
+        const existHospital = await this.exitsHospital(unit_clue);
         if (existHospital) {
-            return Promise.reject("Unit already exists");
+            return Promise.reject("Unit Medical already exists");
         }
         const result = await this.databaseConexion.query(query, [unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy]);
         return result;

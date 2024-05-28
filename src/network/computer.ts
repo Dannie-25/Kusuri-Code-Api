@@ -80,7 +80,7 @@ function newComputer(request: Request, response: Response) {
         })
 }
 
-//*Actualizar todos los campos del Equipo
+//*Actualiza todos los campos del Equipo
 function updateFullComputer(request: Request, response: Response) {
     
     const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments, id_equipment} = request.body;
@@ -108,7 +108,7 @@ function updateFullComputer(request: Request, response: Response) {
         .catch((error) => response.send(error))
 }
 
-//*Actualizar algun dato en especifico del Equipo
+//*Actualiza algun dato en especifico del Equipo
 function updatePartialComputer(request: Request, response: Response) {
     const { id_unit, equipment_type, brand, model, serial_number, operating_system, memory_capacity, disk_capacity, architecture, processor_brand, processor_model, processor_speed, inventory_number, internet, connection_type, entry_type, location, comments } = request.body;
     const { id_equipment } = request.params;
