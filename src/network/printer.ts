@@ -14,7 +14,6 @@ function getPrinter(request: Request, response: Response) {
 //*Obtiene todos las Impresoras registradas
 function getPrinters(request: Request, response: Response) {
     Controller.getPrinters()
-
         .then((result) => response.send(result))
         .catch((error) => response.send(error))
 }
@@ -31,12 +30,16 @@ function getPrinterById(request: Request, response: Response) {
 
 //*Obtiene los datos de la Impresora por id Unit
 function getPrinterByIdUnit(request: Request, response: Response) {
-    const { id_unit } = request.params
+    const { id_unit } = request.params;
     Controller.getPrinterByIdUnit(id_unit)
     .then((result) => {
-        response.send(result)
+        if (result) {
+            response.send(result);
+        } else {
+            response.status(404).send({ message: "No printers found for the given unit ID." });
+        }
     })
-        .catch((error) => response.send(error))
+    .catch((error) => response.status(500).send(error));
 }
 
 //*Obtiene los datos de la Impresora por su nombre

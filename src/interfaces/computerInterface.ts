@@ -74,11 +74,12 @@ export interface ComputersUtilsInterface {
     getInstance(db: Connection);
     getComputers();
     getComputerById(id_equipment: string): Promise<boolean | ComputerData>;
-    getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData>;
+    getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData[]>;
     getComputerByName(equipment_type: string): Promise<boolean | ComputerData>;
     newComputer(params: NewComputerData);
     updateFullComputer(params: NewComputerData, id_equipment);
     updatePartialComputer(params: Partial<NewComputerData>, id_equipment: string);
-    deleteComputer(id_equipment:String);
+    deleteComputer(id_equipment: string);
     createComputerQR(id_equipment: string);
+    
 }

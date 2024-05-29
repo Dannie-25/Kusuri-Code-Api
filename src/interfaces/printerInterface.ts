@@ -53,7 +53,7 @@ export interface PrintersUtilsInterface {
     getInstance(db: Connection);
     getPrinters();
     getPrinterById(id_printer: string): Promise<boolean | PrinterData>;
-    getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData>;
+    getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData[]>;
     getPrinterByName(printer_type: string): Promise<boolean | PrinterData>;
     newPrinter(params: NewPrinterData);
     updateFullPrinter(params: NewPrinterData, id_printer);

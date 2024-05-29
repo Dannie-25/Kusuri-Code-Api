@@ -23,19 +23,35 @@ function getHospitals(request: Request, response: Response) {
 function getHospitalById(request: Request, response: Response) {
     const { id_unit } = request.params
     Controller.getHospitalById(id_unit)
-    .then((result) => {
-        response.send(result)
-    })
+        .then((result) => {
+            response.send(result)
+        })
         .catch((error) => response.send(error))
+}
+
+//*Obtiene los datos que contiene id_unit
+async function getFullById(request: Request, response: Response) {
+    try {
+        const { id_unit } = request.params;
+        const result = await Controller.getFullById(id_unit);
+        if (result) {
+            response.send(result);
+        } else {
+            response.status(404).send("No se encontraron datos completos para la unidad.");
+        }
+    } catch (error) {
+        console.error("Error al obtener datos completos:", error);
+        response.status(500).send("Error interno del servidor");
+    }
 }
 
 //*Obtiene los datos de la Unidad Medica por unit clue
 function getHospitalByUnitClue(request: Request, response: Response) {
     const { unit_clue } = request.params
     Controller.getHospitalByUnitClue(unit_clue)
-    .then((result) => {
-        response.send(result)
-    })
+        .then((result) => {
+            response.send(result)
+        })
         .catch((error) => response.send(error))
 }
 
@@ -43,9 +59,9 @@ function getHospitalByUnitClue(request: Request, response: Response) {
 function getHospitalByName(request: Request, response: Response) {
     const { unit_name } = request.params
     Controller.getHospitalByName(unit_name)
-    .then((result) => {
-        response.send(result)
-    })
+        .then((result) => {
+            response.send(result)
+        })
         .catch((error) => response.send(error))
 }
 
@@ -114,13 +130,13 @@ function updatePartialHospital(request: Request, response: Response) {
 }
 
 //*Elimina una Unidad Medica por id
-function deleteHospital(request: Request, response: Response){
+function deleteHospital(request: Request, response: Response) {
     const { id_unit } = request.params;
     Controller.deleteHospital(id_unit)
         .then((result) => {
             console.log('Unidad Medica deleted')
             response.send(result)
-    })
+        })
         .catch((error) => response.send(error))
 }
 
@@ -152,5 +168,7 @@ routes.put("/:id_unit", (req, res) => {
 routes.patch("/:id_unit", updatePartialHospital);
 routes.delete("/:id_unit", deleteHospital);
 routes.get("/qr/:id_unit", createHospitalQR);
+
+routes.get("/id_full/:id_unit", getFullById);
 
 export default routes;

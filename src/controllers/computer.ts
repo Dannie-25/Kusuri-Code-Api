@@ -1,6 +1,7 @@
 import { NewComputer } from "../interfaces/computerInterface";
 import { getComputersUtils } from "../services/serviceLocator/composer";
 import { ComputersUtils } from "../utils/computerUtils";
+import { ComputerData } from "../interfaces/computerInterface";
 
 //*Obtiene el numero de serie del Equipo para su validación
 function getComputer(serial_number: string) {
@@ -20,9 +21,9 @@ function getComputerById(id_equipment: string) {
 }
 
 //*Obtiene el Equipo por la Id Unit
-function getComputerByIdUnit(id_unit: string) {
+async function getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData[]> {
     const client = getComputersUtils();
-    return client.getComputerByIdUnit(id_unit);
+    return await client.getComputerByIdUnit(id_unit);
 }
 
 //*Obtiene el Equipo por el nombre

@@ -72,12 +72,12 @@ export class ComputersUtils {
     }
 
     //*Obtiene un Equipo por id de unidad
-    async getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData> {
+    async getComputerByIdUnit(id_unit: string): Promise<boolean | ComputerData[]> {
         const query = "SELECT * FROM computer_equipment WHERE id_unit = ?";
         const [rows] = await this.databaseConexion.query(query, [id_unit]);
         if (Array.isArray(rows) && rows.length > 0) {
-            const equipment = rows[0];
-            return this.getDataFromDatabase(equipment);
+            const equipment = rows.map((row) => this.getDataFromDatabase(row));
+            return equipment;
         }
         return false;
     }

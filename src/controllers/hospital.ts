@@ -1,6 +1,8 @@
 import { NewHospital } from "../interfaces/hospitalInterface";
 import { getHospitalsUtils } from "../services/serviceLocator/composer";
 import { HospitalsUtils } from "../utils/hospitalUtils";
+import { getComputersUtils } from "../services/serviceLocator/composer";
+import { getPrintersUtils } from "../services/serviceLocator/composer";
 
 //*Obtiene la clave de la unidad para validación
 function getHospital(unit_clue: string) {
@@ -17,6 +19,29 @@ async function getHospitals() {
 function getHospitalById(id_unit: string) {
     const client = getHospitalsUtils();
     return client.getHospitalById(id_unit);
+}
+
+//*Obtiene todos los datos que tiene id_unit
+async function getFullById(id_unit: string) {
+    try {
+        const hospitalData = await getHospitalsUtils().getHospitalById(id_unit);
+        const computerData = await getComputersUtils().getComputerByIdUnit(id_unit);
+        const printerData = await getPrintersUtils().getPrinterByIdUnit(id_unit);
+
+        if (hospitalData || computerData || printerData) {
+            const fullData = {
+                Unidad_Medica: hospitalData,
+                Equipos_de_Computo: computerData,
+                Impresoras: printerData,
+            };
+            return fullData;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error al obtener datos completos:", error);
+        return false;
+    }
 }
 
 //*Obtiene una Unidad Medica por la clave de Unidad
@@ -92,6 +117,7 @@ export default {
     updateFullHospital,
     updatePartialHospital,
     deleteHospital,
-    createHospitalQR
+    createHospitalQR,
+    getFullById
 }
 

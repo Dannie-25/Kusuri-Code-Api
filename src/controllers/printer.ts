@@ -1,13 +1,14 @@
 import { NewPrinter } from "../interfaces/printerInterface";
 import { getPrintersUtils } from "../services/serviceLocator/composer";
 import { PrintersUtils } from "../utils/printerUtils";
+import { PrinterData } from "../interfaces/printerInterface";
 
 //*Obtiene el numero de serie de la Impresora para su validación
 function getPrinter(serial_number: string) {
 
 }
 
-//*Obtiene todos los Impresoras registrados
+//*Obtiene todas los Impresoras registrados
 async function getPrinters() {
     const client = getPrintersUtils();
     return client.getPrinters();
@@ -20,10 +21,11 @@ function getPrinterById(id_printer: string) {
 }
 
 //*Obtiene la Impresora por la clave de Unidad
-function getPrinterByIdUnit(id_unit: string) {
+async function getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData[]> {
     const client = getPrintersUtils();
-    return client.getPrinterByIdUnit(id_unit);
+    return await client.getPrinterByIdUnit(id_unit);
 }
+
 
 //*Obtiene la Impresora por el nombre
 function getPrinterByName(printer_type: string) {

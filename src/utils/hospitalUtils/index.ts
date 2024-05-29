@@ -64,6 +64,60 @@ export class HospitalsUtils {
         return false;
     }
 
+    //*Obtiene todos los datos de id_unit
+    async getFullById(id_unit: string) {
+        const query = `SELECT
+        mu.id_unit,
+        mu.unit_clue,
+        mu.unit_name,
+        mu.attention_level,
+        mu.internet,
+        mu.enabled_offices,
+        mu.SINERHIAS_office,
+        mu.administrator_name,
+        mu.phone_number,
+        mu.simba_use,
+        mu.pharmacy,
+        ce.equipment_type,
+        ce.brand AS computer_equipment_brand,
+        ce.model AS computer_equipment_model,
+        ce.serial_number AS computer_serial_number,
+        ce.operating_system,
+        ce.memory_capacity,
+        ce.disk_capacity,
+        ce.architecture,
+        ce.processor_brand,
+        ce.processor_model,
+        ce.processor_speed,
+        ce.inventory_number,
+        ce.connection_type,
+        ce.entry_type,
+        ce.location AS computer_location,
+        ce.comments AS computer_comments,
+        pe.brand AS printer_equipment_brand,
+        pe.model AS printer_equipment_model,
+        pe.serial_number AS printer_serial_number,
+        pe.printer_type,
+        pe.print_format,
+        pe.consumable_type,
+        pe.printer_status,
+        pe.entry_type,
+        pe.location AS printer_location,
+        pe.comments AS printer_comments
+      FROM medical_units mu
+      LEFT JOIN computer_equipment ce ON mu.id_unit = ce.id_unit
+      LEFT JOIN printer_equipment pe ON mu.id_unit = pe.id_unit
+      WHERE mu.id_unit = ?;
+      
+    `;
+        const [rows] = await this.databaseConexion.query(query, [id_unit]);
+        if (Array.isArray(rows) && rows.length > 0) {
+            const unit = rows[0];
+            return unit;
+        }
+        return false;
+    }
+
     //*Obtiene una Unidad Medica por clue unit
     async getHospitalByUnitClue(unit_clue: string): Promise<boolean | HospitalData> {
         const query = "SELECT * FROM medical_units WHERE unit_clue = ?";

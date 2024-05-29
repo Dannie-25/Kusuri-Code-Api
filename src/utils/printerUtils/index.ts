@@ -65,12 +65,12 @@ export class PrintersUtils {
     }
 
     //*Obtiene una Impresora por id de unidad
-    async getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData> {
+    async getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData[]> {
         const query = "SELECT * FROM printer_equipment WHERE id_unit = ?";
         const [rows] = await this.databaseConexion.query(query, [id_unit]);
         if (Array.isArray(rows) && rows.length > 0) {
-            const equipment = rows[0];
-            return this.getDataFromDatabase(equipment);
+            const equipment = rows.map((row) => this.getDataFromDatabase(row));
+            return equipment;
         }
         return false;
     }
@@ -103,7 +103,7 @@ export class PrintersUtils {
     async updateFullPrinter(params: NewPrinterData, id_printer: string) {
 
         const query = "UPDATE printer_equipment SET id_unit = ?, brand = ?, model = ?, serial_number = ?, printer_type = ?, print_format = ?, consumable_type = ?, printer_status = ?, entry_type = ?, location= ?, comments = ? WHERE id_printer = ?";
-        const {  id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = params;
+        const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = params;
         const result = await this.databaseConexion.query(query, [id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments, id_printer]);
         return result;
     }

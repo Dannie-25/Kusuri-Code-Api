@@ -31,14 +31,17 @@ function getComputerById(request: Request, response: Response) {
 
 //*Obtiene los datos del Equipo por id Unit
 function getComputerByIdUnit(request: Request, response: Response) {
-    const { id_unit } = request.params
+    const { id_unit } = request.params;
     Controller.getComputerByIdUnit(id_unit)
     .then((result) => {
-        response.send(result)
+        if (result) {
+            response.send(result);
+        } else {
+            response.status(404).send({ message: "No computers found for the given unit ID." });
+        }
     })
-        .catch((error) => response.send(error))
+    .catch((error) => response.status(500).send(error));
 }
-
 //*Obtiene los datos de un Equipo por su nombre
 function getComputerByName(request: Request, response: Response) {
     const { equipment_type } = request.params
