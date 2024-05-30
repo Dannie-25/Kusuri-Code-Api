@@ -6,27 +6,35 @@ const routes = express.Router();
 //Todo:Rutas de la funciones - Obtiene la peticion de del controlador para ser transmitida al HTML
 
 //*Valida si ya existe una Unidad Medica por su unit clue
-function getHospital(request: Request, response: Response) {
+async function getHospital(request: Request, response: Response) {
     const { unit_clue } = request.params;
-    Controller.getHospital(unit_clue)
+    try {
+        const result = Controller.getHospital(unit_clue)
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene todas la Unidades Medicas registradas
-function getHospitals(request: Request, response: Response) {
-    Controller.getHospitals()
-
-        .then((result) => response.send(result.rows))
-        .catch((error) => response.send(error))
+async function getHospitals(request: Request, response: Response) {
+    try {
+        const result = await Controller.getHospitals()
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos de la Unidad Medica por id
-function getHospitalById(request: Request, response: Response) {
+async function getHospitalById(request: Request, response: Response) {
     const { id_unit } = request.params
-    Controller.getHospitalById(id_unit)
-        .then((result) => {
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.getHospitalById(id_unit);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos que contiene id_unit
@@ -46,69 +54,73 @@ async function getFullById(request: Request, response: Response) {
 }
 
 //*Obtiene los datos de la Unidad Medica por unit clue
-function getHospitalByUnitClue(request: Request, response: Response) {
+async function getHospitalByUnitClue(request: Request, response: Response) {
     const { unit_clue } = request.params
-    Controller.getHospitalByUnitClue(unit_clue)
-        .then((result) => {
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.getHospitalByUnitClue(unit_clue);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos de la Unidad Medica por el nombre
-function getHospitalByName(request: Request, response: Response) {
+async function getHospitalByName(request: Request, response: Response) {
     const { unit_name } = request.params
-    Controller.getHospitalByName(unit_name)
-        .then((result) => {
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.getHospitalByName(unit_name);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Agrega una nueva Unidad Medica
-function newHospital(request: Request, response: Response) {
+async function newHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = request.body;
-
-    Controller.newHospital({
-        unit_clue,
-        unit_name,
-        attention_level,
-        internet,
-        enabled_offices,
-        SINERHIAS_office,
-        administrator_name,
-        phone_number,
-        simba_use,
-        pharmacy
-    })
-        .then((result) => response.send(result))
-        .catch((error) => {
-            console.log(error)
-            response.send(error)
-        })
+    try {
+        const result = await Controller.newHospital({
+            unit_clue,
+            unit_name,
+            attention_level,
+            internet,
+            enabled_offices,
+            SINERHIAS_office,
+            administrator_name,
+            phone_number,
+            simba_use,
+            pharmacy
+        });
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Actualiza todos los datos de la Unidad Medica
-function updateFullHospital(request: Request, response: Response) {
+async function updateFullHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy, id_unit } = request.body;
-    Controller.updateFullHospital({
-        unit_clue,
-        unit_name,
-        attention_level,
-        internet,
-        enabled_offices,
-        SINERHIAS_office,
-        administrator_name,
-        phone_number,
-        simba_use,
-        pharmacy
-    }, id_unit)
-        .then((result) => response.send(result))
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.updateFullHospital({
+            unit_clue,
+            unit_name,
+            attention_level,
+            internet,
+            enabled_offices,
+            SINERHIAS_office,
+            administrator_name,
+            phone_number,
+            simba_use,
+            pharmacy
+        }, id_unit);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Actualiza algunos datos de la Unidad Medica
-function updatePartialHospital(request: Request, response: Response) {
+async function updatePartialHospital(request: Request, response: Response) {
     const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = request.body;
     const { id_unit } = request.params;
     const partialHospitalData = {
@@ -124,20 +136,23 @@ function updatePartialHospital(request: Request, response: Response) {
         pharmacy
     };
 
-    Controller.updatePartialHospital(partialHospitalData, id_unit)
-        .then((result) => response.send(result))
-        .catch((error) => response.send(error));
+    try {
+        const result = await Controller.updatePartialHospital(partialHospitalData, id_unit);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Elimina una Unidad Medica por id
-function deleteHospital(request: Request, response: Response) {
+async function deleteHospital(request: Request, response: Response) {
     const { id_unit } = request.params;
-    Controller.deleteHospital(id_unit)
-        .then((result) => {
-            console.log('Unidad Medica deleted')
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.deleteHospital(id_unit);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos de la Unidad Medica por id para generar el QR

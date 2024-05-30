@@ -12,7 +12,7 @@ export type ComputerData = {
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_brand:string;
+    processor_brand: string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
@@ -34,7 +34,7 @@ export interface NewComputerData {
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_brand:string;
+    processor_brand: string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
@@ -46,7 +46,7 @@ export interface NewComputerData {
 }
 
 //*Datos para un nuevo Equipo
-export interface NewComputer{
+export interface NewComputer {
     id_unit: number;
     equipment_type: string;
     brand: string;
@@ -56,7 +56,7 @@ export interface NewComputer{
     memory_capacity: string;
     disk_capacity: string;
     architecture: string;
-    processor_brand:string;
+    processor_brand: string;
     processor_model: string;
     processor_speed: string;
     inventory_number: string;
@@ -81,5 +81,4 @@ export interface ComputersUtilsInterface {
     updatePartialComputer(params: Partial<NewComputerData>, id_equipment: string);
     deleteComputer(id_equipment: string);
     createComputerQR(id_equipment: string);
-    
 }

@@ -8,29 +8,36 @@ const routes = express.Router();
 //Todo:Rutas de la funciones - Obtiene la peticion de del controlador para ser transmitida al HTML
 
 //*Validar si ya esta existente un correo electronico
-function getUser(request: Request, response: Response) {
+async function getUser(request: Request, response: Response) {
     const { email } = request.params;
-    Controller.getUser(email)
+    try {
+        const result = await Controller.getUser(email);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos del Usuario por id
-function getUserById(request: Request, response: Response) {
+async function getUserById(request: Request, response: Response) {
     const { id_user } = request.params
-    Controller.getUserById(id_user)
-        .then((result) => {
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.getUserById(id_user);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Obtiene los datos de un Usuario por email
-function getUserByEmail(request: Request, response: Response) {
+async function getUserByEmail(request: Request, response: Response) {
     const { email } = request.params
-    Controller.getUserByEmail(email)
-        .then((result) => {
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.getUserByEmail(email);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Login del Usuario
@@ -56,44 +63,50 @@ function login(request: Request, response: Response) {
 }
 
 //*Obtiene todos los Usuarios registrados
-function getUsers(request: Request, response: Response) {
-    Controller.getUsers()
-        .then((result) => response.send(result))
-        .catch((error) => response.send(error))
+async function getUsers(request: Request, response: Response) {
+    try {
+        const result = await Controller.getUsers();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Agrega un nuevo Usuario
-function newUser(request: Request, response: Response) {
+async function newUser(request: Request, response: Response) {
     const { names, lastNames, email, password } = request.body;
-
-    Controller.newUser({
-        names,
-        lastNames,
-        email,
-        password
-    })
-        .then((result) => response.send(result))
-        .catch((error) => {
-            console.log(error)
-            response.send(error)
-        })
+    try {
+        const result = await Controller.newUser({
+            names,
+            lastNames,
+            email,
+            password
+        });
+        response.send(result);
+    } catch (error) {
+        console.log(error);
+        response.status(500).send(error.message);
+    }
 }
 
 //*Actualiza todos los datos del Usuario
-function updateFullUser(request: Request, response: Response) {
+async function updateFullUser(request: Request, response: Response) {
     const { names, lastNames, email, password, id_user } = request.body;
-    Controller.updateFullUser({
-        names,
-        lastNames,
-        email,
-        password
-    }, id_user)
-        .then((result) => response.send(result))
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.updateFullUser({
+            names,
+            lastNames,
+            email,
+            password
+        }, id_user);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Actualiza algun dato en especifico del Usuario
-function updatePartialUser(request: Request, response: Response) {
+async function updatePartialUser(request: Request, response: Response) {
     const { names, lastNames, email, password } = request.body;
     const { id_user } = request.params;
     const partialUserData = {
@@ -103,20 +116,24 @@ function updatePartialUser(request: Request, response: Response) {
         password
     };
 
-    Controller.updatePartialUser(partialUserData, id_user)
-        .then((result) => response.send(result))
-        .catch((error) => response.send(error));
+    try {
+        const result = await Controller.updatePartialUser(partialUserData, id_user);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Elimina un Usuario por id
-function deleteUser(request: Request, response: Response) {
+async function deleteUser(request: Request, response: Response) {
     const { id_user } = request.params
-    Controller.deleteUser(id_user)
-        .then((result) => {
-            console.log('User deleted')
-            response.send(result)
-        })
-        .catch((error) => response.send(error))
+    try {
+        const result = await Controller.deleteUser(id_user);
+        console.log('User deleted');
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 }
 
 //*Todas las rutas para realizar consultas

@@ -32,7 +32,7 @@ export interface NewPrinterData {
 }
 
 //*Datos para una nueva Impresora
-export interface NewPrinter{
+export interface NewPrinter {
     id_unit: number;
     brand: string;
     model: string;
@@ -58,6 +58,6 @@ export interface PrintersUtilsInterface {
     newPrinter(params: NewPrinterData);
     updateFullPrinter(params: NewPrinterData, id_printer);
     updatePartialPrinter(params: Partial<NewPrinterData>, id_printer: string);
-    deletePrinter(id_printer:String);
+    deletePrinter(id_printer: string);
     createPrinterQR(id_printer: string);
 }
