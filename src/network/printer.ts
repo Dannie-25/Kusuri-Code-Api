@@ -7,9 +7,9 @@ const routes = express.Router();
 
 //*Validar si ya esta existente una Impresora por su numero de serie
 async function getPrinter(request: Request, response: Response) {
-    const { serial_number } = request.params;
+    const { numero_serie } = request.params;
     try {
-        const result = await Controller.getPrinter(serial_number);
+        const result = await Controller.getPrinter(numero_serie);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -28,9 +28,9 @@ async function getPrinters(request: Request, response: Response) {
 
 //*Obtiene los datos de la Impresora por id
 async function getPrinterById(request: Request, response: Response) {
-    const { id_printer } = request.params
+    const { id_impresora } = request.params
     try {
-        const result = await Controller.getPrinterById(id_printer);
+        const result = await Controller.getPrinterById(id_impresora);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -39,9 +39,9 @@ async function getPrinterById(request: Request, response: Response) {
 
 //*Obtiene los datos de la Impresora por id Unit
 async function getPrinterByIdUnit(request: Request, response: Response) {
-    const { id_unit } = request.params;
+    const { id_unidad } = request.params;
     try {
-        const result = await Controller.getPrinterByIdUnit(id_unit);
+        const result = await Controller.getPrinterByIdUnit(id_unidad);
         if (result) {
             response.send(result);
         } else {
@@ -54,9 +54,9 @@ async function getPrinterByIdUnit(request: Request, response: Response) {
 
 //*Obtiene los datos de la Impresora por su nombre
 async function getPrinterByName(request: Request, response: Response) {
-    const { printer_type } = request.params
+    const { tipo_impresora } = request.params
     try {
-        const result = await Controller.getPrinterByName(printer_type);
+        const result = await Controller.getPrinterByName(tipo_impresora);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -65,20 +65,20 @@ async function getPrinterByName(request: Request, response: Response) {
 
 //*Agregar una nueva Impresora
 async function newPrinter(request: Request, response: Response) {
-    const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = request.body;
+    const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios } = request.body;
     try {
         const result = await Controller.newPrinter({
-            id_unit,
-            brand,
-            model,
-            serial_number,
-            printer_type,
-            print_format,
-            consumable_type,
-            printer_status,
-            entry_type,
-            location,
-            comments,
+            id_unidad,
+            marca,
+            modelo,
+            numero_serie,
+            tipo_impresora,
+            formato_impresion,
+            tipo_consumible,
+            estado_impresora,
+            tipo_ingreso,
+            ubicacion,
+            comentarios,
         });
         response.send(result);
     } catch (error) {
@@ -89,91 +89,91 @@ async function newPrinter(request: Request, response: Response) {
 
 //*Actualiza todos los campos de la Impresora
 async function updateFullPrinter(request: Request, response: Response) {
-    const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments, id_printer } = request.body;
+    const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios, id_impresora } = request.body;
     try {
         const result = await Controller.updateFullPrinter({
-            id_unit,
-            brand,
-            model,
-            serial_number,
-            printer_type,
-            print_format,
-            consumable_type,
-            printer_status,
-            entry_type,
-            location,
-            comments,
-        }, id_printer);
+            id_unidad,
+            marca,
+            modelo,
+            numero_serie,
+            tipo_impresora,
+            formato_impresion,
+            tipo_consumible,
+            estado_impresora,
+            tipo_ingreso,
+            ubicacion,
+            comentarios,
+        }, id_impresora);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
     }
 }
 
-    //*Actualizar algun dato en especifico del Impresora
-    async function updatePartialPrinter(request: Request, response: Response) {
-        const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = request.body;
-        const { id_printer } = request.params;
-        const partialPrinterData = {
-            id_unit,
-            brand,
-            model,
-            serial_number,
-            printer_type,
-            print_format,
-            consumable_type,
-            printer_status,
-            entry_type,
-            location,
-            comments,
-        };
-        try {
-            const result = await Controller.updatePartialPrinter(partialPrinterData, id_printer);
-            response.send(result);
-        } catch (error) {
-            response.status(500).send(error.message);
-        }
+//*Actualizar algun dato en especifico del Impresora
+async function updatePartialPrinter(request: Request, response: Response) {
+    const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios } = request.body;
+    const { id_impresora } = request.params;
+    const partialPrinterData = {
+        id_unidad,
+        marca,
+        modelo,
+        numero_serie,
+        tipo_impresora,
+        formato_impresion,
+        tipo_consumible,
+        estado_impresora,
+        tipo_ingreso,
+        ubicacion,
+        comentarios,
+    };
+    try {
+        const result = await Controller.updatePartialPrinter(partialPrinterData, id_impresora);
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
     }
+}
 
-    //*Eliminar una Impresora por id
-    async function deletePrinter(request: Request, response: Response) {
-        const { id_printer } = request.params;
-        try {
-            const result = await Controller.deletePrinter(id_printer);
-            console.log('Printer deleted');
-            response.send(result);
-        } catch (error) {
-            response.status(500).send(error.message);
-        }
+//*Eliminar una Impresora por id
+async function deletePrinter(request: Request, response: Response) {
+    const { id_impresora } = request.params;
+    try {
+        const result = await Controller.deletePrinter(id_impresora);
+        console.log('Printer deleted');
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error.message);
     }
+}
 
-    //*Obtiene los datos de una Impresora por id para generar el QR
-    async function createPrinterQR(request: Request, response: Response) {
-        const { id_printer } = request.params;
-        try {
-            const qrUrl = await Controller.createPrinterQR(id_printer);
-            response.send(`<img src="${qrUrl}" />`);
-        } catch (error) {
-            response.status(500).send(error.message);
-        }
+//*Obtiene los datos de una Impresora por id para generar el QR
+async function createPrinterQR(request: Request, response: Response) {
+    const { id_impresora } = request.params;
+    try {
+        const qrUrl = await Controller.createPrinterQR(id_impresora);
+        response.send(`<img src="${qrUrl}" />`);
+    } catch (error) {
+        response.status(500).send(error.message);
     }
+}
 
-    //*Todas las rutas para realizar consultas
-    routes.get("/all", getPrinters);
-    routes.get("/", getPrinter);
-    routes.get("/id_printer/:id_printer", getPrinterById);
-    routes.get("/id_unit/:id_unit", getPrinterByIdUnit);
-    routes.get("/printer_type/:printer_type", getPrinterByName);
-    routes.post("/", newPrinter);
-    routes.put("/:id_printer", (req, res) => {
-        const { id_printer } = req.params; //? Captura el id_printer de la URL
-        const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
-        Controller.updateFullPrinter(params, id_printer)
-            .then(result => res.send(result))
-            .catch(error => res.status(500).send(error));
-    });
-    routes.patch("/:id_printer", updatePartialPrinter);
-    routes.delete("/:id_printer", deletePrinter);
-    routes.get("/qr/:id_printer", createPrinterQR);
+//*Todas las rutas para realizar consultas
+routes.get("/all", getPrinters);
+routes.get("/", getPrinter);
+routes.get("/id_impresora/:id_impresora", getPrinterById);
+routes.get("/id_unidad/:id_unidad", getPrinterByIdUnit);
+routes.get("/tipo_impresora/:tipo_impresora", getPrinterByName);
+routes.post("/", newPrinter);
+routes.put("/:id_impresora", (req, res) => {
+    const { id_impresora } = req.params; //? Captura el id_impresora de la URL
+    const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
+    Controller.updateFullPrinter(params, id_impresora)
+        .then(result => res.send(result))
+        .catch(error => res.status(500).send(error));
+});
+routes.patch("/:id_impresora", updatePartialPrinter);
+routes.delete("/:id_impresora", deletePrinter);
+routes.get("/qr/:id_impresora", createPrinterQR);
 
-    export default routes;
+export default routes;

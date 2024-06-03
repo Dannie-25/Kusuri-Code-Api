@@ -5,12 +5,12 @@ import { getComputersUtils } from "../services/serviceLocator/composer";
 import { getPrintersUtils } from "../services/serviceLocator/composer";
 
 //*Obtiene la clave de la unidad para validación
-async function getHospital(unit_clue: string): Promise<HospitalData | null> {
+async function getHospital(clue_unidad: string): Promise<HospitalData | null> {
     const client = getHospitalsUtils();
     try {
         return await client.getHospitals();
     } catch (error) {
-        console.error(`Error al Obtener la Unidad Medica ${unit_clue}:`, error);
+        console.error(`Error al Obtener la Unidad Medica ${clue_unidad}:`, error);
         return null;
     }
 }
@@ -27,22 +27,22 @@ async function getHospitals(): Promise<any[]> {
 }
 
 //*Obtiene una Unidad Medica por ID
-async function getHospitalById(id_unit: string): Promise<boolean | HospitalData> {
+async function getHospitalById(id_unidad: string): Promise<boolean | HospitalData> {
     const client = getHospitalsUtils();
     try {
-        return await client.getHospitalById(id_unit);
+        return await client.getHospitalById(id_unidad);
     } catch (error) {
-        console.error(`Error al Obterner la Unidad Medica con ID ${id_unit}:`, error);
+        console.error(`Error al Obterner la Unidad Medica con ID ${id_unidad}:`, error);
         return null;
     }
 }
 
-//*Obtiene todos los datos que tiene id_unit
-async function getFullById(id_unit: string): Promise<any | boolean> {
+//*Obtiene todos los datos que tiene id_unidad
+async function getFullById(id_unidad: string): Promise<any | boolean> {
     try {
-        const hospitalData = await getHospitalsUtils().getHospitalById(id_unit);
-        const computerData = await getComputersUtils().getComputerByIdUnit(id_unit);
-        const printerData = await getPrintersUtils().getPrinterByIdUnit(id_unit);
+        const hospitalData = await getHospitalsUtils().getHospitalById(id_unidad);
+        const computerData = await getComputersUtils().getComputerByIdUnit(id_unidad);
+        const printerData = await getPrintersUtils().getPrinterByIdUnit(id_unidad);
 
         if (hospitalData || computerData || printerData) {
             const fullData = {
@@ -61,23 +61,23 @@ async function getFullById(id_unit: string): Promise<any | boolean> {
 }
 
 //*Obtiene una Unidad Medica por la clave de Unidad
-async function getHospitalByUnitClue(unit_clue: string): Promise<any | null> {
+async function getHospitalByUnitClue(clue_unidad: string): Promise<any | null> {
     const client = getHospitalsUtils();
     try {
-        return await client.getHospitalByUnitClue(unit_clue);
+        return await client.getHospitalByUnitClue(clue_unidad);
     } catch (error) {
-        console.error(`Error al Obtener la Unidad Medica por ID ${unit_clue}:`, error);
+        console.error(`Error al Obtener la Unidad Medica por ID ${clue_unidad}:`, error);
         return null;
     }
 }
 
 //*Obtiene una Unidad Medica por el nombre
-async function getHospitalByName(unit_name: string): Promise<any | null> {
+async function getHospitalByName(nombre_unidad: string): Promise<any | null> {
     const client = getHospitalsUtils();
     try {
-        return await client.getHospitalByName(unit_name);
+        return await client.getHospitalByName(nombre_unidad);
     } catch (error) {
-        console.error(`Error al Obtener la Unidad Medica ${unit_name}:`, error);
+        console.error(`Error al Obtener la Unidad Medica ${nombre_unidad}:`, error);
         return null;
     }
 }
@@ -94,31 +94,31 @@ async function newHospital(params: NewHospital): Promise<boolean> {
 }
 
 //*Actualiza todos los datos de la Unidad Medica
-async function updateFullHospital(params: NewHospital, id_unit: string): Promise<string> {
+async function updateFullHospital(params: NewHospital, id_unidad: string): Promise<string> {
     const client = getHospitalsUtils();
     try {
-        return await client.updateFullHospital(params, id_unit);
+        return await client.updateFullHospital(params, id_unidad);
     } catch (error) {
-        console.error(`Error al Actualizar los Datos de la Unidad Medica con ID ${id_unit}:`, error);
+        console.error(`Error al Actualizar los Datos de la Unidad Medica con ID ${id_unidad}:`, error);
     }
 }
 
 //*Actualiza todo los datos de la Unidad Medica
-async function updatePartialHospital(params: Partial<NewHospital>, id_unit: string): Promise<boolean> {
+async function updatePartialHospital(params: Partial<NewHospital>, id_unidad: string): Promise<boolean> {
     const client = getHospitalsUtils();
     try {
-        return await client.updatePartialHospital(params, id_unit);
+        return await client.updatePartialHospital(params, id_unidad);
     } catch (error) {
-        console.error(`Error al Actualizar los Datos de la Unidad Medica con ID ${id_unit}:`, error);
+        console.error(`Error al Actualizar los Datos de la Unidad Medica con ID ${id_unidad}:`, error);
         return false;
     }
 }
 
 //*Eliminar una Unidad Medica por id
-async function deleteHospital(id_unit: string): Promise<boolean> {
+async function deleteHospital(id_unidad: string): Promise<boolean> {
     const client = getHospitalsUtils();
     try {
-        return await client.deleteHospital(id_unit);
+        return await client.deleteHospital(id_unidad);
     } catch (error) {
         console.error('Error al Eliminar la Unidad Medica:', error);
         return false;
@@ -126,10 +126,10 @@ async function deleteHospital(id_unit: string): Promise<boolean> {
 }
 
 //*Convierte los datos de la Unidad Medica a QR
-async function createHospitalQR(id_unit: string): Promise<string> {
+async function createHospitalQR(id_unidad: string): Promise<string> {
     const client = getHospitalsUtils();
     try {
-        const hospital = await client.getHospitalById(id_unit);
+        const hospital = await client.getHospitalById(id_unidad);
 
         if (!hospital || typeof hospital === 'boolean') {
             throw new Error('Unidad no encontrada');
@@ -137,20 +137,20 @@ async function createHospitalQR(id_unit: string): Promise<string> {
 
         const formattedData = `
         INFORMACIÓN
-        Clave de la unidad: ${hospital.unit_clue}
-        Nombre de la unidad: ${hospital.unit_name}
-        Nivel de atención: ${hospital.attention_level}
+        Clave de la unidad: ${hospital.clue_unidad}
+        Nombre de la unidad: ${hospital.nombre_unidad}
+        Nivel de atención: ${hospital.nivel_atencion}
         Conexión a internet: ${hospital.internet}
-        Oficinas habilitadas: ${hospital.enabled_offices}
-        Oficina SINERHIAS: ${hospital.SINERHIAS_office}
-        Nombre del administrador: ${hospital.administrator_name}
-        Número de teléfono: ${hospital.phone_number}
-        Uso de SIMBA: ${hospital.simba_use}
-        Farmacia: ${hospital.pharmacy}
+        Oficinas habilitadas: ${hospital.consultorios_habilitados}
+        Oficina SINERHIAS: ${hospital.consultorio_SINERHIAS}
+        Nombre del administrador: ${hospital.nombre_administrador}
+        Número de teléfono: ${hospital.numero_telefonico}
+        Uso de SIMBA: ${hospital.uso_simba}
+        Farmacia: ${hospital.farmacia}
         `;
         return client.createHospitalQR(formattedData.trim());
     } catch (error) {
-        console.error(`Error al Generar el QR de la Unidad Medica con ID ${id_unit}:`, error);
+        console.error(`Error al Generar el QR de la Unidad Medica con ID ${id_unidad}:`, error);
         throw error;
     }
 }

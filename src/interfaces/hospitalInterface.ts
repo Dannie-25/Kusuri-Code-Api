@@ -2,45 +2,45 @@ import { Connection } from "mysql2/promise";
 
 //*Datos completos de la Unidad Medica
 export type HospitalData = {
-    id_unit: number;
-    unit_clue: string;
-    unit_name: string;
-    attention_level: string;
+    id_unidad: number;
+    clue_unidad: string;
+    nombre_unidad: string;
+    nivel_atencion: string;
     internet: boolean;
-    enabled_offices: boolean;
-    SINERHIAS_office: boolean;
-    administrator_name: string;
-    phone_number: number;
-    simba_use: boolean;
-    pharmacy: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
+    nombre_administrador: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Datos almacenados de la Unidad Medica
 export interface NewHospitalData {
-    unit_clue?: string;
-    unit_name: string;
-    attention_level: string;
+    clue_unidad?: string;
+    nombre_unidad: string;
+    nivel_atencion: string;
     internet: boolean;
-    enabled_offices: boolean;
-    SINERHIAS_office: boolean;
-    administrator_name: string;
-    phone_number: number;
-    simba_use: boolean;
-    pharmacy: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
+    nombre_administrador: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Datos para una nueva Unidad Medica
-export interface NewHospital{
-    unit_clue: string;
-    unit_name: string;
-    attention_level: string;
+export interface NewHospital {
+    clue_unidad: string;
+    nombre_unidad: string;
+    nivel_atencion: string;
     internet: boolean;
-    enabled_offices: boolean;
-    SINERHIAS_office: boolean;
-    administrator_name: string;
-    phone_number: number;
-    simba_use: boolean;
-    pharmacy: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
+    nombre_administrador: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Conexión a la a base de datos y Gets de las funciones 
@@ -49,13 +49,13 @@ export interface HospitalsUtilsInterface {
 
     getInstance(db: Connection);
     getHospitals();
-    getHospitalById(id_unit: string): Promise<boolean | HospitalData>;
-    getHospitalByName(unit_name: string): Promise<boolean | HospitalData>;
-    getHospitalByUnitClue(unit_clue: string): Promise<boolean | HospitalData>;
+    getHospitalById(id_unidad: string): Promise<boolean | HospitalData>;
+    getHospitalByName(nombre_unidad: string): Promise<boolean | HospitalData>;
+    getHospitalByUnitClue(clue_unidad: string): Promise<boolean | HospitalData>;
     newHospital(params: NewHospitalData);
-    updateFullHospital(params: NewHospitalData, id_unit);
-    updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string);
-    deleteHospital(id_unit: string);
-    createHospitalQR(id_unit: string);
-    getFullById(id_unit: string);
+    updateFullHospital(params: NewHospitalData, id_unidad);
+    updatePartialHospital(params: Partial<NewHospitalData>, id_unidad: string);
+    deleteHospital(id_unidad: string);
+    createHospitalQR(id_unidad: string);
+    getFullById(id_unidad: string);
 }

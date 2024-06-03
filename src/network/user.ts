@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import Controller from "../controllers/user"
+import { SECRET_KEY } from "../utils/configs/configs";
 
 const routes = express.Router();
 
@@ -9,9 +10,9 @@ const routes = express.Router();
 
 //*Validar si ya esta existente un correo electronico
 async function getUser(request: Request, response: Response) {
-    const { email } = request.params;
+    const { correo } = request.params;
     try {
-        const result = await Controller.getUser(email);
+        const result = await Controller.getUser(correo);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -20,20 +21,20 @@ async function getUser(request: Request, response: Response) {
 
 //*Obtiene los datos del Usuario por id
 async function getUserById(request: Request, response: Response) {
-    const { id_user } = request.params
+    const { id_usuario } = request.params
     try {
-        const result = await Controller.getUserById(id_user);
+        const result = await Controller.getUserById(id_usuario);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
     }
 }
 
-//*Obtiene los datos de un Usuario por email
-async function getUserByEmail(request: Request, response: Response) {
-    const { email } = request.params
+//*Obtiene los datos de un Usuario por correo
+async function getUserBycorreo(request: Request, response: Response) {
+    const { correo } = request.params
     try {
-        const result = await Controller.getUserByEmail(email);
+        const result = await Controller.getUserBycorreo(correo);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -55,7 +56,7 @@ function login(request: Request, response: Response) {
                 response.status(401).json(info);
             }
             if (user) {
-                const token = jwt.sign(user, process.env.SECRET_KEY);
+                const token = jwt.sign(user, SECRET_KEY);
                 response.status(200).json({ user, token });
             }
         }
@@ -74,12 +75,12 @@ async function getUsers(request: Request, response: Response) {
 
 //*Agrega un nuevo Usuario
 async function newUser(request: Request, response: Response) {
-    const { names, lastNames, email, password } = request.body;
+    const { nombre, apellido, correo, password } = request.body;
     try {
         const result = await Controller.newUser({
-            names,
-            lastNames,
-            email,
+            nombre,
+            apellido,
+            correo,
             password
         });
         response.send(result);
@@ -91,14 +92,14 @@ async function newUser(request: Request, response: Response) {
 
 //*Actualiza todos los datos del Usuario
 async function updateFullUser(request: Request, response: Response) {
-    const { names, lastNames, email, password, id_user } = request.body;
+    const { nombre, apellido, correo, password, id_usuario } = request.body;
     try {
         const result = await Controller.updateFullUser({
-            names,
-            lastNames,
-            email,
+            nombre,
+            apellido,
+            correo,
             password
-        }, id_user);
+        }, id_usuario);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -107,17 +108,17 @@ async function updateFullUser(request: Request, response: Response) {
 
 //*Actualiza algun dato en especifico del Usuario
 async function updatePartialUser(request: Request, response: Response) {
-    const { names, lastNames, email, password } = request.body;
-    const { id_user } = request.params;
+    const { nombre, apellido, correo, password } = request.body;
+    const { id_usuario } = request.params;
     const partialUserData = {
-        names,
-        lastNames,
-        email,
+        nombre,
+        apellido,
+        correo,
         password
     };
 
     try {
-        const result = await Controller.updatePartialUser(partialUserData, id_user);
+        const result = await Controller.updatePartialUser(partialUserData, id_usuario);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -126,9 +127,9 @@ async function updatePartialUser(request: Request, response: Response) {
 
 //*Elimina un Usuario por id
 async function deleteUser(request: Request, response: Response) {
-    const { id_user } = request.params
+    const { id_usuario } = request.params
     try {
-        const result = await Controller.deleteUser(id_user);
+        const result = await Controller.deleteUser(id_usuario);
         console.log('User deleted');
         response.send(result);
     } catch (error) {
@@ -139,18 +140,18 @@ async function deleteUser(request: Request, response: Response) {
 //*Todas las rutas para realizar consultas
 routes.get("/", getUser);
 routes.get("/all", getUsers);
-routes.get("/id_user/:id_user", getUserById);
-routes.get("/email/:email", getUserByEmail);
+routes.get("/id_usuario/:id_usuario", getUserById);
+routes.get("/correo/:correo", getUserBycorreo);
 routes.post("/login", login);
 routes.post("/", newUser);
-routes.put("/:id_user", (req, res) => {
-    const { id_user } = req.params; //? Captura el id_user de la URL
+routes.put("/:id_usuario", (req, res) => {
+    const { id_usuario } = req.params; //? Captura id_usuariosuario de la URL
     const params = req.body; //? Captura el resto de los parámetros del cuerpo de la solicitud
-    Controller.updateFullUser(params, id_user)
+    Controller.updateFullUser(params, id_usuario)
         .then(result => res.send(result))
         .catch(error => res.status(500).send(error));
 });
-routes.patch("/:id_user", updatePartialUser);
-routes.delete("/:id_user", deleteUser);
+routes.patch("/:id_usuario", updatePartialUser);
+routes.delete("/:id_usuario", deleteUser);
 
 export default routes;

@@ -25,38 +25,38 @@ export class HospitalsUtils {
     //*Transforma los resultados de una consulta a la Base de Datos en un objeto 
     getDataFromDatabase(data: any): HospitalData {
         return {
-            unit_clue: data.unit_clue,
-            id_unit: data.id_unit,
-            unit_name: data.unit_name,
-            attention_level: data.attention_level,
+            clue_unidad: data.clue_unidad,
+            id_unidad: data.id_unidad,
+            nombre_unidad: data.nombre_unidad,
+            nivel_atencion: data.nivel_atencion,
             internet: data.internet,
-            enabled_offices: data.enabled_offices,
-            SINERHIAS_office: data.SINERHIAS_office,
-            administrator_name: data.administrator_name,
-            phone_number: data.phone_number,
-            simba_use: data.simba_use,
-            pharmacy: data.pharmacy
+            consultorios_habilitados: data.consultorios_habilitados,
+            consultorio_SINERHIAS: data.consultorio_SINERHIAS,
+            nombre_administrador: data.nombre_administrador,
+            numero_telefonico: data.numero_telefonico,
+            uso_simba: data.uso_simba,
+            farmacia: data.farmacia
         }
     }
 
     //*Comprobacion de Unidades Medicas ya existentes
-    async exitsHospital(unit_clue: string): Promise<boolean> {
-        const query = "SELECT * FROM medical_units WHERE unit_clue = ?";
-        const [rows] = await this.databaseConexion.query(query, [unit_clue]);
+    async exitsHospital(clue_unidad: string): Promise<boolean> {
+        const query = "SELECT * FROM unidades_medicas WHERE clue_unidad = ?";
+        const [rows] = await this.databaseConexion.query(query, [clue_unidad]);
         return Array.isArray(rows) && rows.length > 0;
     }
 
     //*Obtiene todas las Unidades Medicas registradas en la Base de Datos
     async getHospitals(): Promise<any> {
-        const query = "SELECT * FROM medical_units";
+        const query = "SELECT * FROM unidades_medicas";
         const [rows] = await this.databaseConexion.query(query);
         return rows
     }
 
     //*Obtiene una Unidad Medica por id
-    async getHospitalById(id_unit: string): Promise<boolean | HospitalData> {
-        const query = "SELECT * FROM medical_units WHERE id_unit = ?";
-        const [rows] = await this.databaseConexion.query(query, [id_unit]);
+    async getHospitalById(id_unidad: string): Promise<boolean | HospitalData> {
+        const query = "SELECT * FROM unidades_medicas WHERE id_unidad = ?";
+        const [rows] = await this.databaseConexion.query(query, [id_unidad]);
         if (Array.isArray(rows) && rows.length > 0) {
             const unit = rows[0];
             return this.getDataFromDatabase(unit);
@@ -64,53 +64,53 @@ export class HospitalsUtils {
         return false;
     }
 
-    //*Obtiene todos los datos de id_unit
-    async getFullById(id_unit: string) {
+    //*Obtiene todos los datos de id_unidad
+    async getFullById(id_unidad: string) {
         const query = `SELECT
-        mu.id_unit,
-        mu.unit_clue,
-        mu.unit_name,
-        mu.attention_level,
+        mu.id_unidad,
+        mu.clue_unidad,
+        mu.nombre_unidad,
+        mu.nivel_atencion,
         mu.internet,
-        mu.enabled_offices,
-        mu.SINERHIAS_office,
-        mu.administrator_name,
-        mu.phone_number,
-        mu.simba_use,
-        mu.pharmacy,
-        ce.equipment_type,
-        ce.brand AS computer_equipment_brand,
-        ce.model AS computer_equipment_model,
-        ce.serial_number AS computer_serial_number,
-        ce.operating_system,
-        ce.memory_capacity,
-        ce.disk_capacity,
-        ce.architecture,
-        ce.processor_brand,
-        ce.processor_model,
-        ce.processor_speed,
-        ce.inventory_number,
-        ce.connection_type,
-        ce.entry_type,
-        ce.location AS computer_location,
-        ce.comments AS computer_comments,
-        pe.brand AS printer_equipment_brand,
-        pe.model AS printer_equipment_model,
-        pe.serial_number AS printer_serial_number,
-        pe.printer_type,
-        pe.print_format,
-        pe.consumable_type,
-        pe.printer_status,
-        pe.entry_type,
-        pe.location AS printer_location,
-        pe.comments AS printer_comments
-      FROM medical_units mu
-      LEFT JOIN computer_equipment ce ON mu.id_unit = ce.id_unit
-      LEFT JOIN printer_equipment pe ON mu.id_unit = pe.id_unit
-      WHERE mu.id_unit = ?;
+        mu.consultorios_habilitados,
+        mu.consultorio_SINERHIAS,
+        mu.nombre_administrador,
+        mu.numero_telefonico,
+        mu.uso_simba,
+        mu.farmacia,
+        ce.tipo_equipo,
+        ce.marca AS equipos_computo_marca,
+        ce.modelo AS equipos_computo_modelo,
+        ce.numero_serie AS computer_numero_serie,
+        ce.sistema_operativo,
+        ce.capacidad_memoria,
+        ce.capacidad_disco,
+        ce.arquitectura,
+        ce.procesador_marca,
+        ce.procesador_modelo,
+        ce.procesador_velocidad,
+        ce.numero_inventario,
+        ce.tipo_conexion,
+        ce.tipo_ingreso,
+        ce.ubicacion AS computer_ubicacion,
+        ce.comentarios AS computer_comentarios,
+        pe.marca AS equipos_impresion_marca,
+        pe.modelo AS equipos_impresion_modelo,
+        pe.numero_serie AS printer_numero_serie,
+        pe.tipo_impresora,
+        pe.formato_impresion,
+        pe.tipo_consumible,
+        pe.estado_impresora,
+        pe.tipo_ingreso,
+        pe.ubicacion AS printer_ubicacion,
+        pe.comentarios AS printer_comentarios
+      FROM unidades_medicas mu
+      LEFT JOIN equipos_computo ce ON mu.id_unidad = ce.id_unidad
+      LEFT JOIN equipos_impresion pe ON mu.id_unidad = pe.id_unidad
+      WHERE mu.id_unidad = ?;
       
     `;
-        const [rows] = await this.databaseConexion.query(query, [id_unit]);
+        const [rows] = await this.databaseConexion.query(query, [id_unidad]);
         if (Array.isArray(rows) && rows.length > 0) {
             const unit = rows[0];
             return unit;
@@ -119,9 +119,9 @@ export class HospitalsUtils {
     }
 
     //*Obtiene una Unidad Medica por clue unit
-    async getHospitalByUnitClue(unit_clue: string): Promise<boolean | HospitalData> {
-        const query = "SELECT * FROM medical_units WHERE unit_clue = ?";
-        const [rows] = await this.databaseConexion.query(query, [unit_clue]);
+    async getHospitalByUnitClue(clue_unidad: string): Promise<boolean | HospitalData> {
+        const query = "SELECT * FROM unidades_medicas WHERE clue_unidad = ?";
+        const [rows] = await this.databaseConexion.query(query, [clue_unidad]);
         if (Array.isArray(rows) && rows.length > 0) {
             const unit = rows[0];
             return this.getDataFromDatabase(unit);
@@ -130,9 +130,9 @@ export class HospitalsUtils {
     }
 
     //*Obtiene una Unidad Medica por su nombre
-    async getHospitalByName(unit_name: string): Promise<boolean | HospitalData> {
-        const query = "SELECT * FROM medical_units WHERE unit_name = ?";
-        const [rows] = await this.databaseConexion.query(query, [unit_name]);
+    async getHospitalByName(nombre_unidad: string): Promise<boolean | HospitalData> {
+        const query = "SELECT * FROM unidades_medicas WHERE nombre_unidad = ?";
+        const [rows] = await this.databaseConexion.query(query, [nombre_unidad]);
         if (Array.isArray(rows) && rows.length > 0) {
             const unit = rows[0];
             return this.getDataFromDatabase(unit);
@@ -143,44 +143,44 @@ export class HospitalsUtils {
     //*Inserción de una nueva Unidad Medica en la Base de Datos
     async newHospital(params: NewHospitalData) {
 
-        const query = "INSERT INTO medical_units ( unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = params;
-        const existHospital = await this.exitsHospital(unit_clue);
+        const query = "INSERT INTO unidades_medicas ( clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        const { clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia } = params;
+        const existHospital = await this.exitsHospital(clue_unidad);
         if (existHospital) {
             return Promise.reject("Unit Medical already exists");
         }
-        const result = await this.databaseConexion.query(query, [unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy]);
+        const result = await this.databaseConexion.query(query, [clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia]);
         return result;
     }
 
     //*Actualiza todos los datos de una Unidad Medica
-    async updateFullHospital(params: NewHospitalData, id_unit: string) {
+    async updateFullHospital(params: NewHospitalData, id_unidad: string) {
 
-        const query = "UPDATE medical_units SET unit_clue = ?, unit_name = ?, attention_level = ?, internet = ?, enabled_offices = ?, SINERHIAS_office = ?, administrator_name = ?, phone_number = ?, simba_use = ?, pharmacy = ? WHERE id_unit = ?";
-        const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = params;
-        const result = await this.databaseConexion.query(query, [unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy, id_unit]);
+        const query = "UPDATE unidades_medicas SET clue_unidad = ?, nombre_unidad = ?, nivel_atencion = ?, internet = ?, consultorios_habilitados = ?, consultorio_SINERHIAS = ?, nombre_administrador = ?, numero_telefonico = ?, uso_simba = ?, farmacia = ? WHERE id_unidad = ?";
+        const { clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia } = params;
+        const result = await this.databaseConexion.query(query, [clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia, id_unidad]);
         return result;
     }
 
     //*Actualiza algun dato especifico de la Unidad Medica
-    async updatePartialHospital(params: Partial<NewHospitalData>, id_unit: string) {
-        const { unit_clue, unit_name, attention_level, internet, enabled_offices, SINERHIAS_office, administrator_name, phone_number, simba_use, pharmacy } = params;
-        let consulta = "UPDATE medical_units SET ";
+    async updatePartialHospital(params: Partial<NewHospitalData>, id_unidad: string) {
+        const { clue_unidad, nombre_unidad, nivel_atencion, internet, consultorios_habilitados, consultorio_SINERHIAS, nombre_administrador, numero_telefonico, uso_simba, farmacia } = params;
+        let consulta = "UPDATE unidades_medicas SET ";
         const array = [];
 
-        if (unit_clue) {
-            consulta += "unit_clue = ?, ";
-            array.push(unit_clue);
+        if (clue_unidad) {
+            consulta += "clue_unidad = ?, ";
+            array.push(clue_unidad);
         }
 
-        if (unit_name) {
-            consulta += "unit_name = ?, ";
-            array.push(unit_name);
+        if (nombre_unidad) {
+            consulta += "nombre_unidad = ?, ";
+            array.push(nombre_unidad);
         }
 
-        if (attention_level) {
-            consulta += "attention_level = ?, ";
-            array.push(attention_level);
+        if (nivel_atencion) {
+            consulta += "nivel_atencion = ?, ";
+            array.push(nivel_atencion);
         }
 
         if (internet) {
@@ -188,45 +188,45 @@ export class HospitalsUtils {
             array.push(internet);
         }
 
-        if (enabled_offices) {
-            consulta += "enabled_offices = ?, ";
-            array.push(enabled_offices);
+        if (consultorios_habilitados) {
+            consulta += "consultorios_habilitados = ?, ";
+            array.push(consultorios_habilitados);
         }
 
-        if (SINERHIAS_office) {
-            consulta += "SINERHIAS_office = ?, ";
-            array.push(SINERHIAS_office);
+        if (consultorio_SINERHIAS) {
+            consulta += "consultorio_SINERHIAS = ?, ";
+            array.push(consultorio_SINERHIAS);
         }
 
-        if (administrator_name) {
-            consulta += "administrator_name = ?, ";
-            array.push(administrator_name);
+        if (nombre_administrador) {
+            consulta += "nombre_administrador = ?, ";
+            array.push(nombre_administrador);
         }
 
-        if (phone_number) {
-            consulta += "phone_number = ?, ";
-            array.push(phone_number);
+        if (numero_telefonico) {
+            consulta += "numero_telefonico = ?, ";
+            array.push(numero_telefonico);
         }
-        if (simba_use) {
-            consulta += "simba_use = ?, ";
-            array.push(simba_use);
-        }
-
-        if (pharmacy) {
-            consulta += "pharmacy = ?, ";
-            array.push(pharmacy);
+        if (uso_simba) {
+            consulta += "uso_simba = ?, ";
+            array.push(uso_simba);
         }
 
-        consulta = consulta.slice(0, -2) + " WHERE id_unit = ?";
-        array.push(id_unit);
+        if (farmacia) {
+            consulta += "farmacia = ?, ";
+            array.push(farmacia);
+        }
+
+        consulta = consulta.slice(0, -2) + " WHERE id_unidad = ?";
+        array.push(id_unidad);
 
         const result = await this.databaseConexion.query(consulta, array);
         return result;
     }
 
     //*Elimina un Unidad Medica por su id
-    async deleteHospital(id_unit: string) {
-        const query = "DELETE FROM medical_units WHERE id_unit = " + id_unit;
+    async deleteHospital(id_unidad: string) {
+        const query = "DELETE FROM unidades_medicas WHERE id_unidad = " + id_unidad;
         const result = await this.databaseConexion.query(query);
         return result
     }

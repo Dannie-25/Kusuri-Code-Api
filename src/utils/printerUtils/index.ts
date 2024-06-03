@@ -24,39 +24,39 @@ export class PrintersUtils {
     //*Transforma los resultados de una consulta a la Base de Datos en un objeto 
     getDataFromDatabase(data: any): PrinterData {
         return {
-            id_printer: data.id_printer,
-            id_unit: data.id_unit,
-            brand: data.brand,
-            model: data.model,
-            serial_number: data.serial_number,
-            printer_type: data.printer_type,
-            print_format: data.print_format,
-            consumable_type: data.consumable_type,
-            printer_status: data.printer_status,
-            entry_type: data.entry_type,
-            location: data.location,
-            comments: data.comments
+            id_impresora: data.id_impresora,
+            id_unidad: data.id_unidad,
+            marca: data.marca,
+            modelo: data.modelo,
+            numero_serie: data.numero_serie,
+            tipo_impresora: data.tipo_impresora,
+            formato_impresion: data.formato_impresion,
+            tipo_consumible: data.tipo_consumible,
+            estado_impresora: data.estado_impresora,
+            tipo_ingreso: data.tipo_ingreso,
+            ubicacion: data.ubicacion,
+            comentarios: data.comentarios
         }
     }
 
     //*Comprobacion de Impresoras ya existentes
-    async exitsPrinter(serial_number: string): Promise<boolean> {
-        const query = "SELECT * FROM printer_equipment WHERE serial_number = ?";
-        const [rows] = await this.databaseConexion.query(query, [serial_number]);
+    async exitsPrinter(numero_serie: string): Promise<boolean> {
+        const query = "SELECT * FROM equipos_impresion WHERE numero_serie = ?";
+        const [rows] = await this.databaseConexion.query(query, [numero_serie]);
         return Array.isArray(rows) && rows.length > 0;
     }
 
     //*Obtiene todas las Impresoras registrados en la Base de Datos
     async getPrinters(): Promise<any> {
-        const query = "SELECT * FROM printer_equipment";
+        const query = "SELECT * FROM equipos_impresion";
         const [rows] = await this.databaseConexion.query(query);
         return rows
     }
 
     //*Obtiene una Impresora por su id
-    async getPrinterById(id_printer: string): Promise<boolean | PrinterData> {
-        const query = "SELECT * FROM printer_equipment WHERE id_printer = ?";
-        const [rows] = await this.databaseConexion.query(query, [id_printer]);
+    async getPrinterById(id_impresora: string): Promise<boolean | PrinterData> {
+        const query = "SELECT * FROM equipos_impresion WHERE id_impresora = ?";
+        const [rows] = await this.databaseConexion.query(query, [id_impresora]);
         if (Array.isArray(rows) && rows.length > 0) {
             const equipment = rows[0];
             return this.getDataFromDatabase(equipment);
@@ -65,9 +65,9 @@ export class PrintersUtils {
     }
 
     //*Obtiene una Impresora por id de unidad
-    async getPrinterByIdUnit(id_unit: string): Promise<boolean | PrinterData[]> {
-        const query = "SELECT * FROM printer_equipment WHERE id_unit = ?";
-        const [rows] = await this.databaseConexion.query(query, [id_unit]);
+    async getPrinterByIdUnit(id_unidad: string): Promise<boolean | PrinterData[]> {
+        const query = "SELECT * FROM equipos_impresion WHERE id_unidad = ?";
+        const [rows] = await this.databaseConexion.query(query, [id_unidad]);
         if (Array.isArray(rows) && rows.length > 0) {
             const equipment = rows.map((row) => this.getDataFromDatabase(row));
             return equipment;
@@ -76,9 +76,9 @@ export class PrintersUtils {
     }
 
     //*Obtiene la Impresora por su nombre
-    async getPrinterByName(printer_type: string): Promise<boolean | PrinterData> {
-        const query = "SELECT * FROM printer_equipment WHERE printer_type = ?";
-        const [rows] = await this.databaseConexion.query(query, [printer_type]);
+    async getPrinterByName(tipo_impresora: string): Promise<boolean | PrinterData> {
+        const query = "SELECT * FROM equipos_impresion WHERE tipo_impresora = ?";
+        const [rows] = await this.databaseConexion.query(query, [tipo_impresora]);
         if (Array.isArray(rows) && rows.length > 0) {
             const equipment = rows[0];
             return this.getDataFromDatabase(equipment);
@@ -89,95 +89,95 @@ export class PrintersUtils {
     //*Inserción de una nueva Impresora en la Base de Datos
     async newPrinter(params: NewPrinterData) {
 
-        const query = "INSERT INTO printer_equipment ( id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = params;
-        const existPrinter = await this.exitsPrinter(serial_number);
+        const query = "INSERT INTO equipos_impresion ( id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios } = params;
+        const existPrinter = await this.exitsPrinter(numero_serie);
         if (existPrinter) {
             return Promise.reject("Equipment already exists");
         }
-        const result = await this.databaseConexion.query(query, [id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments]);
+        const result = await this.databaseConexion.query(query, [id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios]);
         return result;
     }
 
     //*Actualiza todos los datos de la Impresora
-    async updateFullPrinter(params: NewPrinterData, id_printer: string) {
+    async updateFullPrinter(params: NewPrinterData, id_impresora: string) {
 
-        const query = "UPDATE printer_equipment SET id_unit = ?, brand = ?, model = ?, serial_number = ?, printer_type = ?, print_format = ?, consumable_type = ?, printer_status = ?, entry_type = ?, location= ?, comments = ? WHERE id_printer = ?";
-        const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = params;
-        const result = await this.databaseConexion.query(query, [id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments, id_printer]);
+        const query = "UPDATE equipos_impresion SET id_unidad = ?, marca = ?, modelo = ?, numero_serie = ?, tipo_impresora = ?, formato_impresion = ?, tipo_consumible = ?, estado_impresora = ?, tipo_ingreso = ?, ubicacion= ?, comentarios = ? WHERE id_impresora = ?";
+        const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios } = params;
+        const result = await this.databaseConexion.query(query, [id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios, id_impresora]);
         return result;
     }
 
     //*Actualiza algun dato especifico de la Impresora
-    async updatePartialPrinter(params: Partial<NewPrinterData>, id_printer: string) {
-        const { id_unit, brand, model, serial_number, printer_type, print_format, consumable_type, printer_status, entry_type, location, comments } = params;
-        let consulta = "UPDATE printer_equipment SET ";
+    async updatePartialPrinter(params: Partial<NewPrinterData>, id_impresora: string) {
+        const { id_unidad, marca, modelo, numero_serie, tipo_impresora, formato_impresion, tipo_consumible, estado_impresora, tipo_ingreso, ubicacion, comentarios } = params;
+        let consulta = "UPDATE equipos_impresion SET ";
         const array = [];
 
-        if (id_unit) {
-            consulta += "id_unit = ?, ";
-            array.push(id_unit);
+        if (id_unidad) {
+            consulta += "id_unidad = ?, ";
+            array.push(id_unidad);
         }
 
-        if (brand) {
-            consulta += "brand = ?, ";
-            array.push(brand);
+        if (marca) {
+            consulta += "marca = ?, ";
+            array.push(marca);
         }
 
-        if (model) {
-            consulta += "model = ?, ";
-            array.push(model);
+        if (modelo) {
+            consulta += "modelo = ?, ";
+            array.push(modelo);
         }
 
-        if (serial_number) {
-            consulta += "serial_number = ?, ";
-            array.push(serial_number);
+        if (numero_serie) {
+            consulta += "numero_serie = ?, ";
+            array.push(numero_serie);
         }
 
-        if (printer_type) {
-            consulta += "printer_type = ?, ";
-            array.push(printer_type);
+        if (tipo_impresora) {
+            consulta += "tipo_impresora = ?, ";
+            array.push(tipo_impresora);
         }
-        if (print_format) {
-            consulta += "print_format = ?, ";
-            array.push(print_format);
-        }
-
-        if (consumable_type) {
-            consulta += "consumable_type = ?, ";
-            array.push(consumable_type);
+        if (formato_impresion) {
+            consulta += "formato_impresion = ?, ";
+            array.push(formato_impresion);
         }
 
-        if (printer_status) {
-            consulta += "printer_status = ?, ";
-            array.push(printer_status);
+        if (tipo_consumible) {
+            consulta += "tipo_consumible = ?, ";
+            array.push(tipo_consumible);
         }
 
-        if (entry_type) {
-            consulta += "entry_type = ?, ";
-            array.push(entry_type);
+        if (estado_impresora) {
+            consulta += "estado_impresora = ?, ";
+            array.push(estado_impresora);
         }
 
-        if (location) {
-            consulta += "location = ?, ";
-            array.push(location);
+        if (tipo_ingreso) {
+            consulta += "tipo_ingreso = ?, ";
+            array.push(tipo_ingreso);
         }
 
-        if (comments) {
-            consulta += "comments = ?, ";
-            array.push(comments);
+        if (ubicacion) {
+            consulta += "ubicacion = ?, ";
+            array.push(ubicacion);
         }
 
-        consulta = consulta.slice(0, -2) + " WHERE id_printer = ?";
-        array.push(id_printer);
+        if (comentarios) {
+            consulta += "comentarios = ?, ";
+            array.push(comentarios);
+        }
+
+        consulta = consulta.slice(0, -2) + " WHERE id_impresora = ?";
+        array.push(id_impresora);
 
         const result = await this.databaseConexion.query(consulta, array);
         return result;
     }
 
     //*Elimina una Impresora por su id
-    async deletePrinter(id_printer: string) {
-        const query = "DELETE FROM printer_equipment WHERE id_printer = " + id_printer;
+    async deletePrinter(id_impresora: string) {
+        const query = "DELETE FROM equipos_impresion WHERE id_impresora = " + id_impresora;
         const result = await this.databaseConexion.query(query);
         return result
     }

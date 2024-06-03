@@ -2,39 +2,39 @@ import { Connection } from "mysql2/promise";
 
 //*Datos completos del Usuario
 export type UserData = {
-    id_user: number;
-    names: string;
-    lastNames: string;
-    email: string;
+    id_usuario: number;
+    nombre: string;
+    apellido: string;
+    correo: string;
     password: string;
 }
 
 //*Datos almacenados del Usuario
 export interface NewUserData {
-    names?: string;
-    lastNames: string;
-    email: string;
+    nombre?: string;
+    apellido: string;
+    correo: string;
     password: string;
 }
 
 //*Datos para un nuevo Usuario
-export interface NewUser{
-    names: string;
-    lastNames: string;
-    email: string;
+export interface NewUser {
+    nombre: string;
+    apellido: string;
+    correo: string;
     password: string;
 }
 
 //*Conexión a la a base de datos y Gets de las funciones 
 export interface UsersUtilsInterface {
     databaseConexion: Connection;
-    
+
     getInstance(db: Connection);
     getUsers();
-    getUserByEmail(email: string): Promise<boolean | UserData>;
-    getUserById(id_user: string): Promise<boolean | UserData>;
+    getUserBycorreo(correo: string): Promise<boolean | UserData>;
+    getUserById(id_usuario: string): Promise<boolean | UserData>;
     newUser(params: NewUserData);
-    updateFullUser(params: NewUserData, id_user);
-    updatePartialUser(params: Partial<NewUserData>, id_user: string);
-    deleteUser(id_user:string);
+    updateFullUser(params: NewUserData, id_usuario);
+    updatePartialUser(params: Partial<NewUserData>, id_usuario: string);
+    deleteUser(id_usuario: string);
 }

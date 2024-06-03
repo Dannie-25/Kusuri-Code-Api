@@ -1,20 +1,20 @@
-import {UserData, NewUser} from "../interfaces/userInterface";
+import { UserData, NewUser } from "../interfaces/userInterface";
 import { getUsersUtils } from "../services/serviceLocator/composer";
 import { UsersUtils } from "../utils/userUtils";
 
-//*Obtiene el email para validación
-async function getUser(email: string){
+//*Obtiene el correo para validación
+async function getUser(correo: string) {
     const client = getUsersUtils();
     try {
         return await client.getUsers();
     } catch (error) {
-        console.error(`Error al Obtener el Usuario con Email ${email}:`, error);
+        console.error(`Error al Obtener el Usuario con correo ${correo}:`, error);
         return null;
     }
 }
 
 //*Obtiene todos los Usuarios registrados
-async function getUsers(){
+async function getUsers() {
     const client = getUsersUtils();
     try {
         return await client.getUsers();
@@ -26,28 +26,28 @@ async function getUsers(){
 }
 
 //*Obtiene al usuario por id
-async function getUserById(id_user: string){
+async function getUserById(id_usuario: string) {
     const client = getUsersUtils();
     try {
-        return await client.getUserById(id_user);
+        return await client.getUserById(id_usuario);
     } catch (error) {
         console.error('Error al Obtener el ID del Usuario:', error);
         return false;
     }
 }
 
-//*Obtiene al usuario por email
-async function getUserByEmail(email: string){
+//*Obtiene al usuario por correo
+async function getUserBycorreo(correo: string) {
     const client = getUsersUtils();
     try {
-        return await client.getUserByEmail(email);
+        return await client.getUserBycorreo(correo);
     } catch (error) {
-        console.error(`Error al Obtener el Usuario por Email: ${email}:`, error);
+        console.error(`Error al Obtener el Usuario por correo: ${correo}:`, error);
     }
 }
 
 //*Agrega nuevos Usuarios
-async function newUser(params:NewUser){
+async function newUser(params: NewUser) {
     const client = getUsersUtils();
     try {
         return await client.newUser(params);
@@ -58,32 +58,32 @@ async function newUser(params:NewUser){
 }
 
 //*Actualiza todo los datos del Usuario
-async function updateFullUser(params: NewUser, id_user: string){
+async function updateFullUser(params: NewUser, id_usuario: string) {
     const client = getUsersUtils();
     try {
-        return await client.updateFullUser(params, id_user);
+        return await client.updateFullUser(params, id_usuario);
     } catch (error) {
-        console.error(`Error al Actualizar los Datos del Usuario con ID ${id_user}:`, error);
+        console.error(`Error al Actualizar los Datos del Usuario con ID ${id_usuario}:`, error);
         return false;
     }
 }
 
 //*Actualizar solo algunos datos del Usuario
-async function updatePartialUser(params: Partial<NewUser>, id_user: string){
+async function updatePartialUser(params: Partial<NewUser>, id_usuario: string) {
     const client = getUsersUtils();
     try {
-        return client.updatePartialUser(params, id_user);
+        return client.updatePartialUser(params, id_usuario);
     } catch (error) {
-        console.error(`Error al Actualizar el Dato del Usuario con ID ${id_user}:`, error);
+        console.error(`Error al Actualizar el Dato del Usuario con ID ${id_usuario}:`, error);
         return false;
     }
 }
 
 //*Eliminar los datos del Usuarios por id
-async function deleteUser(id_user: string){
+async function deleteUser(id_usuario: string) {
     const client = getUsersUtils();
     try {
-        return client.deleteUser(id_user);
+        return client.deleteUser(id_usuario);
     } catch (error) {
         console.error('Error al Eliminar el Usuario:', error);
         return false;
@@ -94,7 +94,7 @@ export default {
     getUser,
     getUsers,
     getUserById,
-    getUserByEmail,
+    getUserBycorreo,
     newUser,
     updateFullUser,
     updatePartialUser,

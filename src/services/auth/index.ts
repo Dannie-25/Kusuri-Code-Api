@@ -5,19 +5,19 @@ import AES from "crypto-js/aes";
 import CryptoJS from "crypto-js";
 import { getUsersUtils } from "../../services/serviceLocator/composer";
 import { Strategy as JWTStrategy, ExtractJw } from 'passport-jwt';
-import 'dotenv/config';
+import { SECRET_KEY } from '../../utils/configs/configs';
 
 passport.use('local', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'correo',
     passwordField: 'password',
     passReqToCallback: true,
 },
 
 //*Autenticación del Usuario 
-    async (request: Request, email: string, password: string, done: any) => {
+    async (request: Request, correo: string, password: string, done: any) => {
 
         const usersUtils = getUsersUtils();
-        const user = await usersUtils.getUserByEmail(email);
+        const user = await usersUtils.getUserBycorreo(correo);
 
         if (!user) {
             return done('USER NOT FOUND', null, { message: "User or password incorrect" });
@@ -25,18 +25,18 @@ passport.use('local', new LocalStrategy({
 
         if (typeof user === 'object') {
 
-            const encryptedPassword = AES.decrypt(user.password, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8);
+            const encryptedpassword = AES.decrypt(user.password, SECRET_KEY).toString(CryptoJS.enc.Utf8);
 
-            if (typeof user === 'object' && password !== encryptedPassword) {
+            if (typeof user === 'object' && password !== encryptedpassword) {
 
-                return done('PASSWORD INCORRECT', null, { message: "Password incorrect" });
+                return done('password INCORRECT', null, { message: "password incorrect" });
             }
-            if (typeof user === 'object' && password === encryptedPassword) {
+            if (typeof user === 'object' && password === encryptedpassword) {
                 const userData = {
-                    id_user: user.id_user,
-                    names: user.names,
-                    lastNames: user.lastNames,
-                    email: user.email,
+                    id_usuario: user.id_usuario,
+                    nombre: user.nombre,
+                    apellido: user.apellido,
+                    correo: user.correo,
                     password: user.password,
                 }
                 return done(null, user);
