@@ -54,7 +54,7 @@ export interface PrintersUtilsInterface {
     getPrinters();
     getPrinterById(id_impresora: string): Promise<boolean | PrinterData>;
     getPrinterByIdUnit(id_unidad: string): Promise<boolean | PrinterData[]>;
-    getPrinterByName(tipo_impresora: string): Promise<boolean | PrinterData>;
+    getPrinterByName(marca: string): Promise<boolean | PrinterData[]>;
     newPrinter(params: NewPrinterData);
     updateFullPrinter(params: NewPrinterData, id_impresora);
     updatePartialPrinter(params: Partial<NewPrinterData>, id_impresora: string);

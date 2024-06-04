@@ -76,9 +76,9 @@ export class PrintersUtils {
     }
 
     //*Obtiene la Impresora por su nombre
-    async getPrinterByName(tipo_impresora: string): Promise<boolean | PrinterData> {
-        const query = "SELECT * FROM equipos_impresion WHERE tipo_impresora = ?";
-        const [rows] = await this.databaseConexion.query(query, [tipo_impresora]);
+    async getPrinterByName(marca: string): Promise<boolean | PrinterData> {
+        const query = "SELECT * FROM equipos_impresion WHERE marca = ?";
+        const [rows] = await this.databaseConexion.query(query, [marca]);
         if (Array.isArray(rows) && rows.length > 0) {
             const equipment = rows[0];
             return this.getDataFromDatabase(equipment);

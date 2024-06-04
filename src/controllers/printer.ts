@@ -48,12 +48,12 @@ async function getPrinterByIdUnit(id_unidad: string): Promise<PrinterData[] | bo
 
 
 //*Obtiene la Impresora por el nombre
-async function getPrinterByName(tipo_impresora: string): Promise<PrinterData | boolean> {
+async function getPrinterByName(marca: string): Promise<PrinterData[] | boolean> {
     const client = getPrintersUtils();
     try {
-        return await client.getPrinterByName(tipo_impresora);
+        return await client.getPrinterByName(marca);
     } catch (error) {
-        console.error(`Error al Obtener ${tipo_impresora}:`, error);
+        console.error(`Error al Obtener ${marca}:`, error);
         return false;
     }
 }

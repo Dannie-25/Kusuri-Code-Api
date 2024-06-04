@@ -54,9 +54,9 @@ async function getPrinterByIdUnit(request: Request, response: Response) {
 
 //*Obtiene los datos de la Impresora por su nombre
 async function getPrinterByName(request: Request, response: Response) {
-    const { tipo_impresora } = request.params
+    const { marca } = request.params
     try {
-        const result = await Controller.getPrinterByName(tipo_impresora);
+        const result = await Controller.getPrinterByName(marca);
         response.send(result);
     } catch (error) {
         response.status(500).send(error.message);
@@ -163,7 +163,7 @@ routes.get("/all", getPrinters);
 routes.get("/", getPrinter);
 routes.get("/id_impresora/:id_impresora", getPrinterById);
 routes.get("/id_unidad/:id_unidad", getPrinterByIdUnit);
-routes.get("/tipo_impresora/:tipo_impresora", getPrinterByName);
+routes.get("/marca/:marca", getPrinterByName);
 routes.post("/", newPrinter);
 routes.put("/:id_impresora", (req, res) => {
     const { id_impresora } = req.params; //? Captura el id_impresora de la URL
