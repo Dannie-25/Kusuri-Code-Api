@@ -116,14 +116,14 @@ async function createComputerQR(id_equipo: string): Promise<string> {
         Identificación de la unidad: ${computer.id_unidad}
         Tipo de equipo: ${computer.tipo_equipo}
         Marca: ${computer.marca}
-        modeloo: ${computer.modelo}
+        modelo: ${computer.modelo}
         Número de serie: ${computer.numero_serie}
         Sistema operativo: ${computer.sistema_operativo}
         Capacidad de memoria: ${computer.capacidad_memoria}
         Capacidad del disco: ${computer.capacidad_disco}
         Arquitectura: ${computer.arquitectura}
         Marca del procesador: ${computer.procesador_marca}
-        modeloo del procesador: ${computer.procesador_modelo}
+        modelo del procesador: ${computer.procesador_modelo}
         Velocidad del procesador: ${computer.procesador_velocidad}
         Número de inventario: ${computer.numero_inventario}
         Conexión a internet: ${computer.internet}

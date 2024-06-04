@@ -124,7 +124,7 @@ async function updateFullComputer(request: Request, response: Response) {
 
 //*Actualiza algun dato en especifico del Equipo
 async function updatePartialComputer(request: Request, response: Response) {
-    const { id_unidad, tipo_equipo, marca, modelo, numero_serie, sistema_operativo, capacidad_memoria, capacidad_disco, arquitectura, procesador_marca, procesador_modeloo, procesador_velocidad, numero_inventario, internet, tipo_conexion, tipo_ingreso, ubicacion, comentarios } = request.body;
+    const { id_unidad, tipo_equipo, marca, modelo, numero_serie, sistema_operativo, capacidad_memoria, capacidad_disco, arquitectura, procesador_marca, procesador_modelo, procesador_velocidad, numero_inventario, internet, tipo_conexion, tipo_ingreso, ubicacion, comentarios } = request.body;
     const { id_equipo } = request.params;
     const partialComputerData = {
         id_unidad,
@@ -137,7 +137,7 @@ async function updatePartialComputer(request: Request, response: Response) {
         capacidad_disco,
         arquitectura,
         procesador_marca,
-        procesador_modeloo,
+        procesador_modelo,
         procesador_velocidad,
         numero_inventario,
         internet,
