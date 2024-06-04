@@ -47,12 +47,12 @@ async function getComputerByIdUnit(id_unidad: string): Promise<ComputerData[] | 
 }
 
 //*Obtiene el Equipo por el nombre
-async function getComputerByName(tipo_equipo: string): Promise<ComputerData | boolean> {
+async function getComputerByName(marca: string): Promise<ComputerData[] | boolean> {
     const client = getComputersUtils();
     try {
-        return await client.getComputerByName(tipo_equipo);
+        return await client.getComputerByName(marca);
     } catch (error) {
-        console.error(`Error al Obtener ${tipo_equipo}:`, error);
+        console.error(`Error al Obtener ${marca}:`, error);
         return false;
     }
 }

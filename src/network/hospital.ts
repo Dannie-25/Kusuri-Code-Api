@@ -183,7 +183,6 @@ routes.put("/:id_unidad", (req, res) => {
 routes.patch("/:id_unidad", updatePartialHospital);
 routes.delete("/:id_unidad", deleteHospital);
 routes.get("/qr/:id_unidad", createHospitalQR);
-
 routes.get("/id_full/:id_unidad", getFullById);
 
 export default routes;

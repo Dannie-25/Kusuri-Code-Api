@@ -181,7 +181,7 @@ routes.get("/all", getComputers);
 routes.get("/", getComputer);
 routes.get("/id_equipo/:id_equipo", getComputerById);
 routes.get("/id_unidad/:id_unidad", getComputerByIdUnit);
-routes.get("/tipo_equipo/:tipo_equipo", getComputerByName);
+routes.get("/marca/:marca", getComputerByName);
 routes.post("/", newComputer);
 routes.put("/:id_equipo", (req, res) => {
     const { id_equipo } = req.params; //? Captura el id_equipo de la URL

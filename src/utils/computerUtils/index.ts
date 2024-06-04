@@ -83,9 +83,9 @@ export class ComputersUtils {
     }
 
     //*Obtiene el Equipo por su nombre
-    async getComputerByName(tipo_equipo: string): Promise<boolean | ComputerData> {
-        const query = "SELECT * FROM equipos_computo WHERE tipo_equipo = ?";
-        const [rows] = await this.databaseConexion.query(query, [tipo_equipo]);
+    async getComputerByName(marca: string): Promise<boolean | ComputerData> {
+        const query = "SELECT * FROM equipos_computo WHERE marca = ?";
+        const [rows] = await this.databaseConexion.query(query, [marca]);
         if (Array.isArray(rows) && rows.length > 0) {
             const equipment = rows[0];
             return this.getDataFromDatabase(equipment);

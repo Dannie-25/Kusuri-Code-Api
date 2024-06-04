@@ -75,7 +75,7 @@ export interface ComputersUtilsInterface {
     getComputers();
     getComputerById(id_equipo: string): Promise<boolean | ComputerData>;
     getComputerByIdUnit(id_unidad: string): Promise<boolean | ComputerData[]>;
-    getComputerByName(tipo_equipo: string): Promise<boolean | ComputerData>;
+    getComputerByName(marca: string): Promise<boolean | ComputerData[]>;
     newComputer(params: NewComputerData);
     updateFullComputer(params: NewComputerData, id_equipo);
     updatePartialComputer(params: Partial<NewComputerData>, id_equipo: string);
