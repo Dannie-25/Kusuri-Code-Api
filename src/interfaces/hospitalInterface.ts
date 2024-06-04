@@ -6,13 +6,13 @@ export type HospitalData = {
     clue_unidad: string;
     nombre_unidad: string;
     nivel_atencion: string;
-    internet: string;
-    consultorios_habilitados: string;
-    consultorio_SINERHIAS: string;
+    internet: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
     nombre_administrador: string;
-    numero_telefonico: string;
-    uso_simba: string;
-    farmacia: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Datos almacenados de la Unidad Medica
@@ -20,13 +20,13 @@ export interface NewHospitalData {
     clue_unidad?: string;
     nombre_unidad: string;
     nivel_atencion: string;
-    internet: string;
-    consultorios_habilitados: string;
-    consultorio_SINERHIAS: string;
+    internet: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
     nombre_administrador: string;
-    numero_telefonico: string;
-    uso_simba: string;
-    farmacia: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Datos para una nueva Unidad Medica
@@ -34,13 +34,13 @@ export interface NewHospital {
     clue_unidad: string;
     nombre_unidad: string;
     nivel_atencion: string;
-    internet: string;
-    consultorios_habilitados: string;
-    consultorio_SINERHIAS: string;
+    internet: boolean;
+    consultorios_habilitados: boolean;
+    consultorio_SINERHIAS: boolean;
     nombre_administrador: string;
-    numero_telefonico: string;
-    uso_simba: string;
-    farmacia: string;
+    numero_telefonico: number;
+    uso_simba: boolean;
+    farmacia: boolean;
 }
 
 //*Conexión a la a base de datos y Gets de las funciones 
