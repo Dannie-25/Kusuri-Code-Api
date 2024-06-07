@@ -2,8 +2,9 @@ const cors = require ('cors');
 
 //*Peticiones HTML para la API
 const corsMiddleware = cors({
-    origin: 'kusuri-code-api.up.railway.app',
+    origin: '*',
     optionsSuccessStatus: 200,
+    credentials: true
 });
 
 export default corsMiddleware;
