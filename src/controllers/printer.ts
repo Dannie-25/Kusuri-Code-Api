@@ -117,7 +117,7 @@ async function createPrinterQR(id_unidad: string) {
     Identificación de la Impresora: ${printer.id_impresora}
     Identificación de la unidad: ${printer.id_unidad}
     Marca: ${printer.marca}
-    modelo: ${printer.modelo}
+    Modelo: ${printer.modelo}
     Número de serie: ${printer.numero_serie}
     Tipo de impresora: ${printer.tipo_impresora}
     Formato de impresión: ${printer.formato_impresion}
