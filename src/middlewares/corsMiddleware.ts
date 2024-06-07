@@ -2,7 +2,7 @@ const cors = require ('cors');
 
 //*Peticiones HTML para la API
 const corsMiddleware = cors({
-    origin: 'http://localhost:3000',
+    origin: 'kusuri-code-api.up.railway.app',
     optionsSuccessStatus: 200,
 });
 
