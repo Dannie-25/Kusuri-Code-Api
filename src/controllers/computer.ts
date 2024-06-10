@@ -43,6 +43,7 @@ async function getComputerByIdUnit(id_unidad: string): Promise<ComputerData[] | 
         return await client.getComputerByIdUnit(id_unidad);
     } catch (error) {
         console.error(`Error al Obtener los Equipos de Computo por el ID ${id_unidad}:`, error);
+        return false;
     }
 }
 

@@ -43,6 +43,7 @@ async function getPrinterByIdUnit(id_unidad: string): Promise<PrinterData[] | bo
         return await client.getPrinterByIdUnit(id_unidad);
     } catch (error) {
         console.error(`Error al Obtener las Impresoras por el ID ${id_unidad}:`, error);
+        return false;
     }
 }
 

@@ -33,7 +33,7 @@ async function getHospitalById(id_unidad: string): Promise<boolean | HospitalDat
         return await client.getHospitalById(id_unidad);
     } catch (error) {
         console.error(`Error al Obterner la Unidad Medica con ID ${id_unidad}:`, error);
-        return null;
+        return false;
     }
 }
 
@@ -100,6 +100,7 @@ async function updateFullHospital(params: NewHospital, id_unidad: string): Promi
         return await client.updateFullHospital(params, id_unidad);
     } catch (error) {
         console.error(`Error al Actualizar los Datos de la Unidad Medica con ID ${id_unidad}:`, error);
+        return 'Error al actualizar';
     }
 }
 

@@ -1,6 +1,15 @@
 {
     "compilerOptions": {
-        "resolveJsonModule": true,
-        "esModuleInterop": true
-    }
-}
+      "target": "ES6",                           // Elige el objetivo de la compilación
+      "module": "commonjs",                      // Usa módulos CommonJS
+      "esModuleInterop": true,                   // Habilita la interoperabilidad de módulos ES
+      "resolveJsonModule": true,                 // Permite la importación de módulos JSON
+      "skipLibCheck": true,                      // Omite la verificación de tipos en los archivos de declaración
+      "forceConsistentCasingInFileNames": true,  // Impone el uso de mayúsculas y minúsculas consistentes en los nombres de archivo
+      "outDir": "./dist",                        // Directorio de salida para los archivos compilados
+      "rootDir": "./src"                         // Directorio raíz de entrada para los archivos fuente
+    },
+    "include": ["src"],                           // Incluye todos los archivos en el directorio src
+    "exclude": ["node_modules"]                   // Excluye el directorio node_modules
+  }
+  
