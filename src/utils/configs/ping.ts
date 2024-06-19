@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cron = require('node-cron');
 
-// URL de tu API
+// URL de la API
 const apiURL = 'https://kusuri-code-api.up.railway.app/v1/hospital/all';
 
 // Función para hacer el ping
@@ -14,10 +14,11 @@ const pingAPI = async () => {
   }
 };
 
-// Programa la tarea para que se ejecute cada 30 minutos
-cron.schedule('0 */30 * * * *', () => {
+// Programa la tarea para que se ejecute cada 12 Horas
+cron.schedule('0 */12 * * * *', () => {
   console.log('Pinging API...');
   pingAPI();
 });
+
 
 console.log('Ping service started...');
