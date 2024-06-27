@@ -12,19 +12,16 @@ async function getUser(correo: string) {
         return null;
     }
 }
-
 //*Obtiene todos los Usuarios registrados
 async function getUsers() {
     const client = getUsersUtils();
     try {
         return await client.getUsers();
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error al Obtener los Usuarios:', error)
         return [];
     }
 }
-
 //*Obtiene al usuario por id
 async function getUserById(id_usuario: string) {
     const client = getUsersUtils();
@@ -35,7 +32,6 @@ async function getUserById(id_usuario: string) {
         return false;
     }
 }
-
 //*Obtiene al usuario por correo
 async function getUserBycorreo(correo: string) {
     const client = getUsersUtils();
@@ -56,7 +52,6 @@ async function newUser(params: NewUser) {
         return false;
     }
 }
-
 //*Actualiza todo los datos del Usuario
 async function updateFullUser(params: NewUser, id_usuario: string) {
     const client = getUsersUtils();
@@ -67,7 +62,6 @@ async function updateFullUser(params: NewUser, id_usuario: string) {
         return false;
     }
 }
-
 //*Actualizar solo algunos datos del Usuario
 async function updatePartialUser(params: Partial<NewUser>, id_usuario: string) {
     const client = getUsersUtils();
@@ -78,7 +72,6 @@ async function updatePartialUser(params: Partial<NewUser>, id_usuario: string) {
         return false;
     }
 }
-
 //*Eliminar los datos del Usuarios por id
 async function deleteUser(id_usuario: string) {
     const client = getUsersUtils();

@@ -3,7 +3,6 @@ import routes from "./src/routes";
 import corsMiddleware from "./src/middlewares/corsMiddleware";
 import { initial } from "./src/services/serviceLocator/composer";
 import "./src/services/auth";
-import './src/utils/configs/ping';
 
 const server = express();
 
